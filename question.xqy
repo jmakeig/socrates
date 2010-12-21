@@ -14,7 +14,7 @@ return (
 		</head>
 		<body>
 			<h1>{data($question/s:summary)}</h1>
-			<p>{data($question/s:question)}</p>
+			<div>{$question/s:question/*}</div>
 			<form action="add-response.xqy?id={$id}" method="post">
 				<div class="control">
 			    <div class="label">

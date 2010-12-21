@@ -8,16 +8,25 @@ html:html-serialize(
 	<head>
 		<title>New question…</title>
 		<link href="/assets/browser.css" rel="stylesheet" type="text/css"/>
+		<script src="/assets/lib/showdown-debug.js" type="text/javascript"/>
 	</head>
 	<body>
 		<h1>New question</h1>
-		<form action="create-new.xqy" method="post">
+		<form action="create-new.xqy" method="post" 
+			onsubmit="var markup=(new Showdown.converter()).makeHtml(document.getElementById('question').value); document.getElementById('markup').value=markup;">
 			<div class="control">
 		    <div class="label">
 		      <label for="question">Question</label>
 		    </div>
 		    <div class="input">
-	        <textarea name="question" id="question"/>
+		    	<div class="front">
+		        <textarea id="question"/>
+		        <input type="hidden" name="question" id="markup"/>
+		        <div><a id="preview">Preview…</a></div>
+	        </div>
+	        <div class="back">
+			    	OUTPUT
+			    </div>
 		    </div>
 			</div>
 			<div class="control">

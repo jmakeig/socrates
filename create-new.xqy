@@ -7,7 +7,7 @@ let $doc := <s:question>
 	<s:id>{$id}</s:id>
 	<s:create-date>{current-dateTime()}</s:create-date>
 	<s:create-user>{xdmp:get-current-user()}</s:create-user>
-	<s:question>{$question}</s:question>
+	<s:question>{xdmp:unquote($question, "http://www.w3.org/1999/xhtml", ("format-xml", "repair-none", "default-language=en"))}</s:question>
 	<s:summary>{$summary}</s:summary>
 	<s:responses/>
 </s:question>

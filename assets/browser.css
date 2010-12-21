@@ -16,6 +16,20 @@ p {
 	margin: 1em 0;
 }
 form {}
+pre, code {
+	font-family: Inconsolata, Consolas, monospace;
+}
+pre {
+	width: 100%;
+	overflow: auto;
+	height: 24em;
+}
+em {
+	font-style: italic;
+}
+strong {
+	font-weight: bold;
+}
 /* Overrides */
 .control .guide {
     font-size: 80%;

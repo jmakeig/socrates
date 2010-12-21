@@ -7,15 +7,23 @@
 		<!-- XSLT is not capable of serializing the HTML5 doctype -->
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE HTML&gt;&#13;</xsl:text>
 		<xhtml:html>
-			<xsl:apply-templates select="attribute()|node()" />
+			<xsl:apply-templates select="attribute()|node()|comment()|processing-instruction()" />
 		</xhtml:html>
 	</xsl:template>
+	<!-- Prefix magic for XHTML -->
 	<xsl:template match="xhtml:*" priority="-1">
 		<xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml"
 			inherit-namespaces="no">
 			<xsl:apply-templates select="attribute()|node()" />
 		</xsl:element>
 	</xsl:template>
+	<!-- Pass-through for non-XHTML -->
+	<xsl:template match="*[namespace-uri() ne 'http://www.w3.org/1999/xhtml']">
+		<xsl:copy>
+			<xsl:apply-templates select="attribute()|node()|comment()|processing-instruction()" />
+		</xsl:copy>
+	</xsl:template>
+	<!-- Generic copy for non-nodes -->
 	<xsl:template match="attribute()|text()|comment()|processing-instruction()">
 		<xsl:copy />
 	</xsl:template>
