@@ -1,13 +1,13 @@
 /* @see http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/ */
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
+h1, h2, h3, h4, h5, h6, p, blockquote, /*pre,*/
+a, abbr, acronym, address, big, cite, /*code,*/
 del, dfn, em, font, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-input, select, textarea {
+input, select /*, textarea*/ {
 	margin: 0;
 	padding: 0;
 	outline: 0;
@@ -20,8 +20,8 @@ input, select, textarea {
 }
 /* Without form elements */
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
+h1, h2, h3, h4, h5, h6, p, blockquote, /*pre,*/
+a, abbr, acronym, address, big, cite, /*code,*/
 del, dfn, em, font, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 dl, dt, dd, ol, ul, li,
@@ -65,6 +65,8 @@ blockquote, q {
 	input[type=text] has 2px border and 1px padding
 	textarea has 1px border and 1px padding
 */
+/*
 textarea {
 	padding: 3px;
 }
+*/

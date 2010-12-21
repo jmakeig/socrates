@@ -16,14 +16,10 @@ p {
 	margin: 1em 0;
 }
 form {}
-pre, code {
+pre, code, textarea {
 	font-family: Inconsolata, Consolas, monospace;
 }
-pre {
-	width: 100%;
-	overflow: auto;
-	height: 24em;
-}
+pre {}
 em {
 	font-style: italic;
 }

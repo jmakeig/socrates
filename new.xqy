@@ -8,11 +8,12 @@ html:html-serialize(
 	<head>
 		<title>New question…</title>
 		<link href="/assets/browser.css" rel="stylesheet" type="text/css"/>
-		<script src="/assets/lib/showdown-debug.js" type="text/javascript"/>
+		<script src="/assets/lib/showdown-0.9-debug.js" type="text/javascript"/>
 	</head>
 	<body>
 		<h1>New question</h1>
-		<form action="create-new.xqy" method="post" 
+		<!-- TODO: Extract this out -->
+		<form action="create-new.xqy" method="post"
 			onsubmit="var markup=(new Showdown.converter()).makeHtml(document.getElementById('question').value); document.getElementById('markup').value=markup;">
 			<div class="control">
 		    <div class="label">
@@ -21,7 +22,7 @@ html:html-serialize(
 		    <div class="input">
 		    	<div class="front">
 		        <textarea id="question"/>
-		        <input type="hidden" name="question" id="markup"/>
+		        <textarea name="question" id="markup" style="height: 20em;"/>
 		        <div><a id="preview">Preview…</a></div>
 	        </div>
 	        <div class="back">
@@ -39,6 +40,7 @@ html:html-serialize(
 			</div>
 			<div class="actions">
 				<button>Create…</button>
+				<button onclick="var markup=(new Showdown.converter()).makeHtml(document.getElementById('question').value); document.getElementById('markup').value=markup; return false;">Preview</button>
 			</div>
 		</form>
 	</body>

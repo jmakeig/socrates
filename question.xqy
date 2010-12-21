@@ -14,7 +14,7 @@ return (
 		</head>
 		<body>
 			<h1>{data($question/s:summary)}</h1>
-			<div>{$question/s:question/*}</div>
+			<div>{(xdmp:log($question), $question/s:question/node())}</div>
 			<form action="add-response.xqy?id={$id}" method="post">
 				<div class="control">
 			    <div class="label">
@@ -32,7 +32,8 @@ return (
 				<div>{format-dateTime($response/s:response-create-date, "[MNn] [D], [Y], [h]:[m01] [PN]", "en", (), ())}</div>
 				<p>{data($response/s:comment)}</p>
 			</div>}
-			<div class="actions"><a href="/new.xqy">New…</a></div>
+			<div class="actions">
+				<ul><li><a href="/new.xqy">New</a></li><li><a href="/questions.xqy">All</a></li></ul></div>
 		</body>
 	</html>
 	)
