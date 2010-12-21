@@ -1,0 +1,32 @@
+@import url("reset.css");
+@import url("form.css");
+
+body {
+	padding: 1% 10%;
+  font-family: Helvetica, sans-serif;
+  line-height: 1.25;
+}
+h1 {
+	font-size: 4em;
+	line-height: 1.5;
+	font-weight: bold;
+	text-align: center;
+}
+p {
+	margin: 1em 0;
+}
+form {}
+/* Overrides */
+.control .guide {
+    font-size: 80%;
+    color: #999;
+}
+.control .label {
+	font-weight: bold;
+}
+.control .label .guide {
+	font-weight: normal;
+}
+textarea#question {
+	height: 18em;
+}
