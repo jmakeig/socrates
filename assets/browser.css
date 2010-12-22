@@ -1,5 +1,5 @@
 @import url("reset.css");
-/*@import url("form.css");*/
+@import url("form.css");
 
 body {
 	padding: 1% 10%;
@@ -8,7 +8,8 @@ body {
 }
 h1 {
 	font-size: 4em;
-	line-height: 1.5;
+	line-height: 1.0;
+	margin-bottom: 0.5em;
 	font-weight: bold;
 	text-align: center;
 }
@@ -38,7 +39,7 @@ strong {
 	font-weight: normal;
 }
 .editor textarea {
-	height: 18em;
+	height: 24em;
 }
 
 
@@ -64,14 +65,18 @@ strong {
 .editor .input {
 	position: relative;
 }
-
+.editor .label {
+	position: relative;
+	z-index: 1000; /* HACK due to floats and z-index issues to get button above .input */
+}
 .editor .back {
 	position: absolute;
 	-webkit-box-sizing: border-box;
 	top: 0;
 	
 	height: 100%;
-	width: 100%;
+	right: 0;
+	left: 22%;
 	overflow: auto;
 	
 	border: solid 1px #ccc;
