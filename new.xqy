@@ -9,24 +9,26 @@ html:html-serialize(
 		<title>New question…</title>
 		<link href="/assets/browser.css" rel="stylesheet" type="text/css"/>
 		<script src="/assets/lib/showdown-0.9-debug.js" type="text/javascript"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"/>
+		<script src="/assets/question.js" type="text/javascript"/>
 	</head>
 	<body>
 		<h1>New question</h1>
 		<!-- TODO: Extract this out -->
-		<form action="create-new.xqy" method="post"
-			onsubmit="var markup=(new Showdown.converter()).makeHtml(document.getElementById('question').value); document.getElementById('markup').value=markup;">
-			<div class="control">
+		<form id="new-question" action="create-new.xqy" method="post"
+			onsubmit="">
+			<div class="control editor">
 		    <div class="label">
 		      <label for="question">Question</label>
+		      <div><button class="preview-action">Preview</button></div>
 		    </div>
 		    <div class="input">
 		    	<div class="front">
 		        <textarea id="question"/>
-		        <textarea name="question" id="markup" style="height: 20em;"/>
-		        <div><a id="preview">Preview…</a></div>
+						<input type="hidden" name="question" id="markup" />
 	        </div>
 	        <div class="back">
-			    	OUTPUT
+			    	<div id="preview"></div>
 			    </div>
 		    </div>
 			</div>
@@ -40,7 +42,6 @@ html:html-serialize(
 			</div>
 			<div class="actions">
 				<button>Create…</button>
-				<button onclick="var markup=(new Showdown.converter()).makeHtml(document.getElementById('question').value); document.getElementById('markup').value=markup; return false;">Preview</button>
 			</div>
 		</form>
 	</body>

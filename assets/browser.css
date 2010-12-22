@@ -1,5 +1,5 @@
 @import url("reset.css");
-@import url("form.css");
+/*@import url("form.css");*/
 
 body {
 	padding: 1% 10%;
@@ -13,7 +13,7 @@ h1 {
 	text-align: center;
 }
 p {
-	margin: 1em 0;
+	margin-bottom: 1em;
 }
 form {}
 pre, code, textarea {
@@ -37,6 +37,93 @@ strong {
 .control .label .guide {
 	font-weight: normal;
 }
-textarea#question {
+.editor textarea {
 	height: 18em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.editor .input {
+	position: relative;
+}
+
+.editor .back {
+	position: absolute;
+	-webkit-box-sizing: border-box;
+	top: 0;
+	
+	height: 100%;
+	width: 100%;
+	overflow: auto;
+	
+	border: solid 1px #ccc;
+}
+
+.editor .front {
+	z-index: 900;
+	
+	-webkit-transform: rotateY(0deg);
+	-webkit-transform-style: preserve-3d;
+	-webkit-backface-visibility: hidden;
+
+	/* -- transition is the magic sauce for animation -- */
+	transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-webkit-transition: all .4s ease-in-out;
+	
+}
+
+
+.editor.flip .front {
+	z-index: 900;
+	-webkit-transform: rotateY(180deg);
+}
+
+.editor .back {
+	z-index: 800;
+	-webkit-transform: rotateY(-180deg);
+	-webkit-transform-style: preserve-3d;
+	-webkit-backface-visibility: hidden;
+
+	/* -- transition is the magic sauce for animation -- */
+	transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-webkit-transition: all .4s ease-in-out;
+}
+
+.editor.flip .back {
+	z-index: 1000;
+	-webkit-transform: rotateY(0deg);
+}
+
+/* -- X axis rotation for click panel -- */
+.editor .front {
+	-webkit-transform: rotateX(0deg);
+}
+.editor.flip .front {
+	-webkit-transform: rotateX(180deg);
+}
+.editor .back {
+	-webkit-transform: rotateX(-180deg);
+}
+.editor.flip .back {
+	-webkit-transform: rotateX(0deg);
 }
