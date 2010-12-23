@@ -21,9 +21,11 @@ return (
     	</options>
 			return for $result in search:search($q, $options)/search:result
       	let $question as element(s:question) := doc($result/@uri)/s:question
-				return <div><a href="/question.xqy?id={data($question/s:id)}">Summary: {data($question/s:summary)}</a></div>
+				return <div>
+					<a href="/question.xqy?id={data($question/@id)}">Summary: {data($question/s:summary)}</a>
+				</div>
 			}
-			<div class="actions"><a href="/new.xqy">New…</a></div>
+			<div class="actions"><ul><li><a href="/new.xqy">New…</a></li></ul></div>
 		</body>
 	</html>
 	)

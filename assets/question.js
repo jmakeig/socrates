@@ -1,15 +1,3 @@
-$(document).ready(function() {
-//$("#new-question").onsubmit(function(){
-//	console.dir(this);
-//	var markup=(new Showdown.converter()).makeHtml(document.getElementById('question').value); 
-//	document.getElementById('markup').value=markup;
-
-//var text = "Markdown *rocks*.";
-//var converter = new Showdown.converter();
-//var html = converter.makeHtml(text);
-
-	var editor = new ML.Editor($("#question"), $("#markup"), $("#preview"));
-});
 
 var ML = {};
 ML.Editor = function(inputEl, markupEl, previewEl) {

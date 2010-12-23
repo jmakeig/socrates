@@ -8,9 +8,14 @@ html:html-serialize(
 	<head>
 		<title>New question…</title>
 		<link href="/assets/browser.css" rel="stylesheet" type="text/css"/>
-		<script src="/assets/lib/showdown-0.9-debug.js" type="text/javascript"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"/>
+		<script src="/assets/lib/showdown-0.9-debug.js" type="text/javascript"/>
 		<script src="/assets/question.js" type="text/javascript"/>
+		<script type="text/javascript">
+			$(document).ready(function() {{
+				var editor = new ML.Editor($("#question"), $("#markup"), $("#preview"));
+			}});
+		</script>
 	</head>
 	<body>
 		<h1>New question</h1>

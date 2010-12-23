@@ -38,8 +38,32 @@ strong {
 .control .label .guide {
 	font-weight: normal;
 }
-.editor textarea {
-	height: 24em;
+
+.new-response {
+	border: solid 1px #ccc;
+	border-style: solid none;
+	padding-bottom: 1em;
+}
+
+
+.response {
+	margin: 0.5em 0;
+	padding: 0.5em 0;
+	border-bottom: solid 1px #ccc;
+}
+.response .respondent {
+	width: 75%;
+	float: left;
+	font-weight: bold;
+}
+.response .date {
+	width: 25%;
+	float: right;
+	text-align: right;
+}
+.response .comment {
+	clear: both;
+	margin: 2em 0;
 }
 
 
@@ -56,10 +80,9 @@ strong {
 
 
 
-
-
-
-
+.editor textarea {
+	height: 24em;
+}
 
 
 .editor .input {
