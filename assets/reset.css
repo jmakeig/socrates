@@ -38,6 +38,10 @@ body {
 	color: black;
 	background: white;
 }
+a {
+	color: blue;
+	cursor: pointer;
+}
 ol, ul {
 	list-style: none;
 }
@@ -65,8 +69,9 @@ blockquote, q {
 	input[type=text] has 2px border and 1px padding
 	textarea has 1px border and 1px padding
 */
-/*
 textarea {
 	padding: 3px;
 }
-*/
+textarea {
+	-webkit-appearance: textfield;
+}

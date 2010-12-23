@@ -20,7 +20,7 @@ html:html-serialize(
 			<div class="control editor">
 		    <div class="label">
 		      <label for="question">Question</label>
-		      <div><button class="preview-action">Preview</button></div>
+		      <div class="guide"><a class="preview-action">Preview →</a></div>
 		    </div>
 		    <div class="input">
 		    	<div class="front">

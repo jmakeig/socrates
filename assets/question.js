@@ -34,8 +34,8 @@ ML.Editor = function(inputEl, markupEl, previewEl) {
 		evt.stopPropagation();
 		convert();
 		var ed = $(this).closest(".control.editor").toggleClass("flip");
-		if(ed.is(".flip")) $(this).html("Edit");
-		else $(this).html("Preview");
+		if(ed.is(".flip")) $(this).html("← Edit");
+		else $(this).html("Preview →");
 	});
 	
 	this.inputEl.bind("change paste blur", function(evt){
