@@ -52,7 +52,8 @@ return (
 					<div class="comment">{$response/s:comment/*}</div>
 				</div>}
 			<div class="actions">
-				<ul><li><a href="/new.xqy">New</a></li><li><a href="/questions.xqy">All</a></li></ul></div>
+				<ul><li><a href="/new.xqy">New</a></li><li><a href="/questions.xqy">All</a></li></ul>
+			</div>
 		</body>
 	</html>
 	)

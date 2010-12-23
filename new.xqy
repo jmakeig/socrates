@@ -46,7 +46,9 @@ html:html-serialize(
 		    </div>
 			</div>
 			<div class="actions">
-				<button>Create…</button>
+				<ul>
+					<li><button>Create…</button></li>
+					<li><a href="/questions.xqy">All</a></li></ul>
 			</div>
 		</form>
 	</body>
