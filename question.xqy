@@ -23,7 +23,7 @@ return (
 		<body>
 			<h1>{data($question/s:summary)}</h1>
 			<div>{(xdmp:log($question), $question/s:detail/*)}</div>
-			<form action="add-response.xqy?id={$id}" method="post" class="new-response">
+			<form action="{s:get-url-responses($id)}" method="post" class="new-response">
 				<div class="control editor">
 		    <div class="label">
 		      <label for="question">Contribute a Response</label>
@@ -46,13 +46,13 @@ return (
 			return 
 				<div class="response" id="response-{data($response/@id)}">
 					<div class="respondent">Response from  
-						<a href="/users.xqy?id={$response/s:respondent}">{data($response/s:respondent)}</a>
+						<a href="{s:get-url-user($response/s:respondent)}">{data($response/s:respondent)}</a>
 					</div>
 					<div class="date">{format-dateTime($response/@created, $s:DATE_FORMAT)}</div>
 					<div class="comment">{$response/s:comment/*}</div>
 				</div>}
 			<div class="actions">
-				<ul><li><a href="/new.xqy">New</a></li><li><a href="/questions.xqy">All</a></li></ul>
+				<ul><li><a href="{s:get-url-question-new()}">New</a></li><li><a href="{s:get-url-questions()}">All</a></li></ul>
 			</div>
 		</body>
 	</html>

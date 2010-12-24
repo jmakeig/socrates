@@ -42,6 +42,9 @@ a {
 	color: blue;
 	cursor: pointer;
 }
+a:visited {
+	color: purple;
+}
 ol, ul {
 	list-style: none;
 }

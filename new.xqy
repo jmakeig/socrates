@@ -1,5 +1,6 @@
 xquery version "1.0-ml";
 import module namespace html="http://marklogic.com/jmakeig/html" at "lib/html-utils.xqy";
+import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
 declare namespace x="http://www.w3.org/1999/xhtml";
 xdmp:set-response-content-type("text/html"),
 xdmp:set-response-encoding("utf-8"),
@@ -20,7 +21,7 @@ html:html-serialize(
 	<body>
 		<h1>New question</h1>
 		<!-- TODO: Extract this out -->
-		<form id="new-question" action="create-new.xqy" method="post"
+		<form id="new-question" action="{s:get-url-questions()}" method="post"
 			onsubmit="">
 			<div class="control editor">
 		    <div class="label">
@@ -48,7 +49,7 @@ html:html-serialize(
 			<div class="actions">
 				<ul>
 					<li><button>Create…</button></li>
-					<li><a href="/questions.xqy">All</a></li></ul>
+					<li><a href="{s:get-url-questions()}">All</a></li></ul>
 			</div>
 		</form>
 	</body>

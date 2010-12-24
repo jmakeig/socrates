@@ -4,7 +4,7 @@ import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
 let $id as xs:string := xdmp:get-request-field("id")
 let $response as xs:string := xdmp:get-request-field("response")
 let $question as element(s:question)? := /s:question[@id eq $id]
-let $rid as xs:unsignedLong := xdmp:random()
+let $rid := xs:string(xdmp:random())
 let $r as element(s:response) := 
 	<s:response id="{$rid}" created="{current-dateTime()}">
 		<s:respondent>{xdmp:get-current-user()}</s:respondent>
@@ -13,5 +13,5 @@ let $r as element(s:response) :=
 return (
 	xdmp:node-insert-child($question/s:responses, $r),
 	xdmp:set-response-code(303,""),
-	xdmp:add-response-header("Location", concat("/question.xqy?id=", $id, "#response-", $rid))
+	xdmp:add-response-header("Location", s:get-url-question($id, $rid))
 )

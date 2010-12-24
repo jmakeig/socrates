@@ -15,5 +15,5 @@ let $doc as element(s:question):=
 return (
 	xdmp:document-insert(concat(xdmp:random(), ".xml"), $doc, (), ("http://marklogic.com/socrates/workflow/new")),
 	xdmp:set-response-code(303,""),
-	xdmp:add-response-header("Location", concat("/question.xqy?id=", $id))
+	xdmp:add-response-header("Location", s:get-url-question($id))
 )
