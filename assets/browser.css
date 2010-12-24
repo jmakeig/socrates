@@ -1,157 +1,175 @@
+/* 
+ *  Copyright 2008-2010 Mark Logic Corporation
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *  
+ *  @author Justin Makeig <jmakeig@marklogic.com>
+ *
+ */
+
 @import url("reset.css");
 @import url("form.css");
 
 body {
-	padding: 1% 10%;
+  padding: 1% 10%;
   font-family: Helvetica, sans-serif;
   line-height: 1.25;
 }
+
 h1 {
-	font-size: 4em;
-	line-height: 1.0;
-	margin-bottom: 0.5em;
-	font-weight: bold;
-	text-align: center;
+  font-size: 4em;
+  line-height: 1.0;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  text-align: center;
 }
+
 p {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
-form {}
-pre, code, textarea {
-	font-family: Inconsolata, Consolas, monospace;
+
+form {
+  
 }
-pre {}
+
+pre,code,textarea {
+  font-family: Inconsolata, Consolas, monospace;
+}
+
+pre {
+  
+}
+
 em {
-	font-style: italic;
+  font-style: italic;
 }
+
 strong {
-	font-weight: bold;
+  font-weight: bold;
 }
+
 /* Overrides */
 .control .guide {
-    font-size: 80%;
-    color: #999;
+  font-size: 80%;
+  color: #999;
 }
+
 .control .label {
-	font-weight: bold;
+  font-weight: bold;
 }
+
 .control .label .guide {
-	font-weight: normal;
+  font-weight: normal;
 }
 
 .new-response {
-	border: solid 1px #ccc;
-	border-style: solid none;
-	padding-bottom: 1em;
+  border: solid 1px #ccc;
+  border-style: solid none;
+  padding-bottom: 1em;
 }
-
 
 .response {
-	margin: 0.5em 0;
-	padding: 0.5em 0;
-	border-bottom: solid 1px #ccc;
+  margin: 0.5em 0;
+  padding: 0.5em 0;
+  border-bottom: solid 1px #ccc;
 }
+
 .response .respondent {
-	width: 75%;
-	float: left;
-	font-weight: bold;
+  width: 75%;
+  float: left;
+  font-weight: bold;
 }
+
 .response .date {
-	width: 25%;
-	float: right;
-	text-align: right;
+  width: 25%;
+  float: right;
+  text-align: right;
 }
+
 .response .comment {
-	clear: both;
-	margin: 2em 0;
+  clear: both;
+  margin: 2em 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .editor textarea {
-	height: 24em;
+  height: 24em;
 }
-
 
 .editor .input {
-	position: relative;
+  position: relative;
 }
+
 .editor .label {
-	position: relative;
-	z-index: 1000; /* HACK due to floats and z-index issues to get button above .input */
+  position: relative;
+  z-index: 1000; /* HACK due to floats and z-index issues to get button above .input */
 }
+
 .editor .back {
-	position: absolute;
-	-webkit-box-sizing: border-box;
-	top: 0;
-	
-	height: 100%;
-	right: 0;
-	left: 22%;
-	overflow: auto;
-	
-	border: solid 1px #ccc;
+  position: absolute;
+  -webkit-box-sizing: border-box;
+  top: 0;
+  height: 100%;
+  right: 0;
+  left: 22%;
+  overflow: auto;
+  border: solid 1px #ccc;
 }
 
 .editor .front {
-	z-index: 900;
-	
-	-webkit-transform: rotateY(0deg);
-	-webkit-transform-style: preserve-3d;
-	-webkit-backface-visibility: hidden;
-
-	/* -- transition is the magic sauce for animation -- */
-	transition: all .4s ease-in-out;
-	-moz-transition: all .4s ease-in-out;
-	-webkit-transition: all .4s ease-in-out;
-	
+  z-index: 900;
+  -webkit-transform: rotateY(0deg);
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  /* -- transition is the magic sauce for animation -- */
+  transition: all .4s ease-in-out;
+  -moz-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
 }
 
-
 .editor.flip .front {
-	z-index: 900;
-	-webkit-transform: rotateY(180deg);
+  z-index: 900;
+  -webkit-transform: rotateY(180deg);
 }
 
 .editor .back {
-	z-index: 800;
-	-webkit-transform: rotateY(-180deg);
-	-webkit-transform-style: preserve-3d;
-	-webkit-backface-visibility: hidden;
-
-	/* -- transition is the magic sauce for animation -- */
-	transition: all .4s ease-in-out;
-	-moz-transition: all .4s ease-in-out;
-	-webkit-transition: all .4s ease-in-out;
+  z-index: 800;
+  -webkit-transform: rotateY(-180deg);
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  /* -- transition is the magic sauce for animation -- */
+  transition: all .4s ease-in-out;
+  -moz-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
 }
 
 .editor.flip .back {
-	z-index: 1000;
-	-webkit-transform: rotateY(0deg);
+  z-index: 1000;
+  -webkit-transform: rotateY(0deg);
 }
 
 /* -- X axis rotation for click panel -- */
 .editor .front {
-	-webkit-transform: rotateX(0deg);
+  -webkit-transform: rotateX(0deg);
 }
+
 .editor.flip .front {
-	-webkit-transform: rotateX(180deg);
+  -webkit-transform: rotateX(180deg);
 }
+
 .editor .back {
-	-webkit-transform: rotateX(-180deg);
+  -webkit-transform: rotateX(-180deg);
 }
+
 .editor.flip .back {
-	-webkit-transform: rotateX(0deg);
+  -webkit-transform: rotateX(0deg);
 }
