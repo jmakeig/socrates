@@ -59,6 +59,9 @@ strong {
 }
 
 /* Overrides */
+.control {
+  margin: 1em; 
+}
 .control .guide {
   font-size: 80%;
   color: #999;

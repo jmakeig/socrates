@@ -53,7 +53,7 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 };
 
 
-declare function r:matches-accept($accept-test as element(r:accept)?, $accept as xs:string) as xs:boolean {
+declare function r:matches-accept($accept-test as element(r:accept)?, $accept as xs:string?) as xs:boolean {
 	true()
 };
 
