@@ -1,0 +1,35 @@
+<routes xmlns="http://marklogic.com/router">
+  <!-- Remember: You need to escape curly braces in 
+       regular expression strings -->
+  <route>
+    <method>GET</method>
+    <path>^/assets</path>
+    <resolution>$0</resolution>
+  </route>
+  <route>
+    <method>GET</method>
+    <path trailing-slash="ignore">^/questions$</path>
+    <resolution>questions.xqy$1</resolution>
+  </route>
+  <route>
+    <method>POST</method>
+    <path trailing-slash="ignore">^/questions$</path>
+    <resolution>create-new.xqy</resolution>
+  </route>
+  <route>
+    <method>GET</method>
+    <path trailing-slash="ignore">^/questions/new$</path>
+    <resolution>new.xqy</resolution>
+  </route>
+  <route>
+    <method>GET</method>
+    <path trailing-slash="ignore">{'^/questions/([0-9]{15,25})$'}</path>
+    <resolution>question.xqy?id=$1</resolution>
+  </route>
+  <route>
+    <method>POST</method>
+    <path trailing-slash="ignore">{'^/questions/([0-9]{19})/responses$'}</path>
+    <resolution>add-response.xqy?id=$1</resolution>
+  </route>
+  <error>error.xqy</error>
+</routes> 

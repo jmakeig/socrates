@@ -56,12 +56,13 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 			and r:matches-accept($r/r:accept, $accept)
 		order by xs:int($r/@priority) descending
 		return $r
+	let $_ := xdmp:log($matches)
 	return 
 		(:let $_ := xdmp:log(string-join(($path, $matches[1]/r:path, $matches[1]/r:resolution), ", ")):)
 		if($matches) then 
 			replace(
 				$path, 
-				r:adjust-for-trailing-path($matches[1]/r:path, $matches[1]/r:path/@trailing-slash), 
+				r:adjust-for-trailing-slash($matches[1]/r:path, $matches[1]/r:path/@trailing-slash), 
 				$matches[1]/r:resolution
 			) 
 		else 
@@ -73,11 +74,11 @@ declare function r:matches-accept($accept-test as element(r:accept)?, $accept as
 	true()
 };
 
-declare function r:matches-parameters($param-test as element(r:parameters), $params as xs:string?) as xs:boolean {
+declare function r:matches-parameters($param-test as element(r:parameters)?, $params as xs:string?) as xs:boolean {
 	true()
 };
 
-declare function r:adjust-for-trailing-path($pattern, $trailing-slash) as xs:string {
+declare function r:adjust-for-trailing-slash($pattern, $trailing-slash) as xs:string {
 	if($trailing-slash = "ignore") then
 		let $end := ends-with($pattern, "$")
 		let $trimmed  := if($end) then substring($pattern, 1, string-length($pattern) - 1) else $pattern
@@ -89,7 +90,7 @@ declare function r:adjust-for-trailing-path($pattern, $trailing-slash) as xs:str
 declare function r:matches-path($path-test as element(r:path)?, $path) as xs:boolean {
 	matches(
 		$path, 
-		r:adjust-for-trailing-path($path-test, $path-test/@trailing-slash)
+		r:adjust-for-trailing-slash($path-test, $path-test/@trailing-slash)
 	)
 };
 
