@@ -2,10 +2,11 @@ File system only: Create $MLHOME/Modules/Socrates and soft link src to the src f
 
 
 Create execute priv: socrates-execute, http://marklogic.com/socrates/execute
-Create roles: socrates-contributor, socrates-curator
-	socrates-curator inherits socrates-contributor
+Create role socrates-contributor
 	Add socrates-execute, any-uri, and any-collection privs
 	Add default permissions socrates-contributor -> read, update
+Create role socrates-curator
+	Inherit socrates-contributor
 Create users curt, connie
 	Add socrates-contributor, socrates-curator roles to curt and socrates-contributor to connie
 Create socrates-internal role
