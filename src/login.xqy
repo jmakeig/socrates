@@ -17,12 +17,7 @@
  :
  :)
 xquery version "1.0-ml";
-import module namespace r="http://marklogic.com/router" at "/Socrates/src/lib/router.xqy";
-import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
+declare default function namespace "http://www.w3.org/2005/xpath-functions";
+declare option xdmp:mapping "false";
 
-let $url as xs:string := xdmp:get-request-url()
-let $method as xs:string := xdmp:get-request-method()
-let $accept as xs:string? := xdmp:get-request-header("Accept")
-let $options as element(r:routes) := r:read-routes("/routes.xml")
-return 
-	r:route($options, $url, $method, $accept)
+"Login!"

@@ -8,6 +8,12 @@
     <resolution>$0</resolution>
   </route>
   <route>
+    <annotation>Pass-through for everything in the assets directory.</annotation>
+    <method>GET</method>
+    <path>^/login$</path>
+    <resolution>login.xqy</resolution>
+  </route>
+  <route>
     <method>GET</method>
     <path trailing-slash="ignore">^/questions$</path>
     <resolution>questions.xqy$1</resolution>
@@ -16,6 +22,7 @@
     <method>POST</method>
     <path trailing-slash="ignore">^/questions$</path>
     <resolution>create-new.xqy</resolution>
+    <privilege action="execute">http://marklogic.com/socrates/execute</privilege>
   </route>
   <route>
     <method>GET</method>
@@ -29,8 +36,9 @@
   </route>
   <route>
     <method>POST</method>
-    <path trailing-slash="ignore">{'^/questions/([0-9]{19})/responses$'}</path>
+    <path trailing-slash="ignore">{'^/questions/([0-9]{15,25})/responses$'}</path>
     <resolution>add-response.xqy?id=$1</resolution>
+    <privilege action="execute">http://marklogic.com/socrates/execute</privilege>
   </route>
   <error>error.xqy</error>
 </routes> 

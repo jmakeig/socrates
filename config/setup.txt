@@ -1,5 +1,20 @@
+File system only: Create $MLHOME/Modules/Socrates and soft link src to the src folder in the repo. Make sure all of the files import amped modules using the absolute path (e.g. /Socrates/src/lib/router.xqy)
+
 Create users curt, connie
 Create execute priv: socrates-execute, http://marklogic.com/socrates/execute
 Create roles: socrates-contributor, socrates-curator
-Add socrates-execute priv to roles
+Add socrates-execute, any-uri, and any-collection privs to roles
 Add socrates-contributor, socrates-curator roles to curt and socrates-contributor to connie
+Create amps for {}html-serialize in /Socrates/src/lib/html-utils.xqy
+	and {http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy 
+	(TODO: These are currently admin. This should change to a socrates-internal role.)
+Make sure socrates-contributors can read and update questions
+	(: Update permissions :)	
+	xquery version "1.0-ml";
+	for $i in collection()
+	return xdmp:document-add-permissions(
+		xdmp:node-uri($i), (
+			xdmp:permission("socrates-contributor", "read"),
+			xdmp:permission("socrates-contributor", "update")
+		)
+	)

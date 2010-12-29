@@ -31,5 +31,6 @@ let $r as element(s:response) :=
 return (
 	xdmp:node-insert-child($question/s:responses, $r),
 	xdmp:set-response-code(303,""),
-	xdmp:add-response-header("Location", s:get-url-question($id, $rid))
+	(:xdmp:add-response-header("Location", s:get-url-question($id, $rid)):)
+	xdmp:redirect-response(s:get-url-question($id, $rid))
 )

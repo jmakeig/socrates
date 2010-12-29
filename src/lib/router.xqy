@@ -21,6 +21,11 @@ module namespace r="http://marklogic.com/router";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare option xdmp:mapping "false";
 
+(: Amped :)
+declare function r:read-routes($path as xs:string) as element(r:routes) {
+	xdmp:invoke($path)
+};
+
 declare function r:route($routes as element(r:routes)) as xs:string? {
 	r:route($routes, xdmp:get-request-path(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
 };
@@ -29,16 +34,17 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 	let $tokens := tokenize($url, "\?")
 	let $path := $tokens[1]
 	let $params := tokenize($tokens[2], "&amp;")
+	let $_ := xdmp:log($routes)
 	let $matches :=  
 		for $r in $routes/r:route
 		where
 			    r:matches-method($r/r:method,$method) 
 			and r:matches-path($r/r:path, $path)
+			and r:matches-privilege($r/r:privilege)
 			and r:matches-parameters($r/r:parameters, $params)
 			and r:matches-accept($r/r:accept, $accept)
-		order by xs:int($r/@priority) descending
+		(:order by xs:int($r/@priority) descending:)
 		return $r
-	(:let $_ := xdmp:log($matches):)
 	return 
 		(:let $_ := xdmp:log(string-join(($path, $matches[1]/r:path, $matches[1]/r:resolution), ", ")):)
 		if($matches) then 
@@ -52,6 +58,14 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 			concat(data($routes/r:error),"?url=", $url, "&amp;code=404")
 };
 
+declare function r:matches-privilege($priv-test as element(r:privilege)?) as xs:boolean {
+	if($priv-test) then
+		let $_ := xdmp:log($priv-test)
+		return
+		xdmp:has-privilege($priv-test, ($priv-test/@action, "execute")[1])
+	else
+		true()
+};
 
 declare function r:matches-accept($accept-test as element(r:accept)?, $accept as xs:string?) as xs:boolean {
 	true()
