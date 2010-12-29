@@ -1,0 +1,5 @@
+Create users curt, connie
+Create execute priv: socrates-execute, http://marklogic.com/socrates/execute
+Create roles: socrates-contributor, socrates-curator
+Add socrates-execute priv to roles
+Add socrates-contributor, socrates-curator roles to curt and socrates-contributor to connie

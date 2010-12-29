@@ -21,6 +21,7 @@ import module namespace html="http://marklogic.com/jmakeig/html" at "lib/html-ut
 import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
 let $id as xs:string := xdmp:get-request-field("id")
 let $question as element(s:question)? := /s:question[@id eq $id]
+let $_ := xdmp:log("asdf")
 return (
 	xdmp:set-response-content-type("text/html"),
 	xdmp:set-response-encoding("utf-8"),
