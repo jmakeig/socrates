@@ -32,9 +32,10 @@ let $doc as element(s:question):=
 
 return (
 	xdmp:document-insert(
+		(: TODO: Give a base URI so it can be secured with URI privs :)
 		concat(xdmp:random(), ".xml"), 
 		$doc, 
-		(xdmp:permission("socrates-contributor", "read"), xdmp:permission("socrates-contributor", "update")), 
+		(xdmp:default-permissions()(:xdmp:permission("socrates-contributor", "read"), xdmp:permission("socrates-contributor", "update"):)), 
 		("http://marklogic.com/socrates/workflow/new")
 	),
 	(:xdmp:set-response-code(303,""),

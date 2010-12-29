@@ -20,8 +20,7 @@ xquery version "1.0-ml";
 import module namespace html="http://marklogic.com/jmakeig/html" at "/Socrates/src/lib/html-utils.xqy";
 import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
 let $id as xs:string := xdmp:get-request-field("id")
-let $question as element(s:question)? := /s:question[@id eq $id]
-let $_ := xdmp:log("asdf")
+let $question as element(s:question)? := /s:question[@id eq $id] (: TODO: 404 if the question doesn't exist. Should this be in the router? :)
 return (
 	xdmp:set-response-content-type("text/html"),
 	xdmp:set-response-encoding("utf-8"),
