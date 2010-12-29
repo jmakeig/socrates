@@ -21,28 +21,10 @@ module namespace r="http://marklogic.com/router";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare option xdmp:mapping "false";
 
-(:
-<routes xmlns="http://marklogic.com/router">
-	<route priority="100">
-		<method>GET,POST</method>
-		<path trailing-slash="redirect">^/questions$</path>
-		<parameters>*</parameters>
-		<resolution>questions.xqy$1</resolution>
-	</route>
-</routes> 
-:)
+declare function r:route($routes as element(r:routes)) as xs:string? {
+	r:route($routes, xdmp:get-request-path(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
+};
 
-(:
-declare function r:route($routes as element(r:routes)) as xs:string {
-	r:route($r:routes, xdmp:get-request-path(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
-};
-declare function r:route($routes as element(r:routes), $url as xs:string) as xs:string {
-	r:route($r:routes, $url, xdmp:get-request-method(), xdmp:get-request-header("Accept"))
-};
-declare function r:route($routes as element(r:routes), $url as xs:string, $method as xs:string) as xs:string {
-	r:route($r:routes, $url, $method, xdmp:get-request-header("Accept"))
-};
-:)
 declare function r:route($routes as element(r:routes), $url as xs:string, $method as xs:string, $accept as xs:string?) as xs:string? {
 	let $tokens := tokenize($url, "\?")
 	let $path := $tokens[1]
@@ -56,7 +38,7 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 			and r:matches-accept($r/r:accept, $accept)
 		order by xs:int($r/@priority) descending
 		return $r
-	let $_ := xdmp:log($matches)
+	(:let $_ := xdmp:log($matches):)
 	return 
 		(:let $_ := xdmp:log(string-join(($path, $matches[1]/r:path, $matches[1]/r:resolution), ", ")):)
 		if($matches) then 
@@ -66,7 +48,8 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 				$matches[1]/r:resolution
 			) 
 		else 
-			data($routes/r:error)
+			(: TODO: I'm not sure of the best way to propagate errors. :)
+			concat(data($routes/r:error),"?url=", $url, "&amp;code=404")
 };
 
 

@@ -2,6 +2,7 @@
   <!-- Remember: You need to escape curly braces in 
        regular expression strings -->
   <route>
+    <annotation>Pass-through for everything in the assets directory.</annotation>
     <method>GET</method>
     <path>^/assets</path>
     <resolution>$0</resolution>
