@@ -10,9 +10,11 @@ Create role socrates-curator
 Create users curt, connie
 	Add socrates-contributor, socrates-curator roles to curt and socrates-contributor to connie
 Create socrates-internal role
-	Add xdmp:invoke and xdmp:xslt-invoke privs
-Create amps for {http://marklogic.com/jmakeig/html}html-serialize in /Socrates/src/lib/html-utils.xqy
-	and {http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy for socrates-internal role
+	Add xdmp:invoke, xdmp:xslt-invoke, and xdmp:add-response-header privs
+Create amps for socrates-internal role
+  {http://marklogic.com/jmakeig/html}html-serialize in /Socrates/src/lib/html-utils.xqy
+	{http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy
+	{http://marklogic.com/router}redirect-response in /Socrates/src/lib/router.xqy
 
 
 

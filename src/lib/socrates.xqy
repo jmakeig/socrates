@@ -59,4 +59,3 @@ declare function s:get-url-users() as xs:string {
 declare function s:get-url-user($id as xs:string) as xs:string {
 	concat(s:get-url-users(), "/", escape-html-uri($id))
 };
-

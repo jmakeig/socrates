@@ -80,14 +80,40 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 										return $r
 									)[1]
 									return 
-										if($matches) then 
-											replace(
-												$path, 
-												r:adjust-for-trailing-slash($matches[1]/r:path, $matches[1]/r:path/@trailing-slash), 
-												$matches[1]/r:resolution
-											) 
+										if(count($matches) eq 1) then 
+											r:resolve-matched-route($matches, $path) 
 									else 
 										r:compose-error($routes, $url, 400, "Bad Request")	
+};
+
+declare function r:resolve-matched-route($route as element(r:route), $path) as xs:string {
+	let $resolution := replace(
+		$path, 
+		r:adjust-for-trailing-slash($route/r:path, $route/r:path/@trailing-slash), 
+		($route/r:resolution, $route/r:redirect)[1]
+	)
+	return
+		if($route/r:resolution) then
+			$resolution
+		else if($route/r:redirect) then
+			let $code as xs:integer := if($route/r:redirect/@type eq "permanent") then 301 else 302
+			let $msg as xs:string := r:get-response-message($code)
+			(: TODO: error.xqy should NOT be hard-coded (and it's misnamed) :)
+			return concat("error.xqy?url=", $path, "&amp;code=", xs:string($code), "&amp;msg=", $msg, "&amp;location=", $resolution)
+		else 
+			error(xs:QName("r:NORESOLUTIONORREDIRECT"), "The route must either have a resolution or a redirector element") 
+};
+
+declare private function r:get-response-message($code as xs:integer) as xs:string {
+	if($code eq 200) then "OK"
+	else if($code eq 301) then "Moved Permanently"
+	else if($code eq 302) then "Found"
+	else if($code eq 400) then "Bad Request"
+	else if($code eq 403) then "Forbidden"
+	else if($code eq 404) then "Not Found"
+	else if($code eq 405) then "Method Not Allowed"
+	else if($code eq 406) then "Not Acceptable"
+	else "Other"
 };
 
 declare function r:matches-privilege($priv-test as element(r:privilege)?) as xs:boolean {
@@ -138,4 +164,11 @@ declare function r:compose-error($routes as element(r:routes), $url as xs:string
 	), "&amp;")
 	return
 		concat($error,"?", $query-string)
+};
+
+declare function r:redirect-response($name as xs:string, $type as xs:integer?)  as  empty-sequence() {
+	(
+		xdmp:add-response-header("Location", $name),
+		xdmp:set-response-code($type, r:get-response-message($type))
+	)
 };

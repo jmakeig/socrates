@@ -2,6 +2,11 @@
   <!-- Remember: You need to escape curly braces in 
        regular expression strings -->
   <route>
+    <method>GET</method>
+    <path>^/q$</path>
+    <redirect type="permanent">/questions</redirect>
+  </route>
+  <route>
     <annotation>Pass-through for everything in the assets directory.</annotation>
     <method>GET</method>
     <path>^/assets</path>
