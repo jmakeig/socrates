@@ -30,32 +30,64 @@ declare function r:route($routes as element(r:routes)) as xs:string? {
 	r:route($routes, xdmp:get-request-path(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
 };
 
+(: TODO: This is ugly and should be broken into smaller functions for testing and readability. :)
 declare function r:route($routes as element(r:routes), $url as xs:string, $method as xs:string, $accept as xs:string?) as xs:string? {
 	let $tokens := tokenize($url, "\?")
 	let $path := $tokens[1]
 	let $params := tokenize($tokens[2], "&amp;")
-	let $_ := xdmp:log($routes)
-	let $matches :=  
+	(:let $_ := xdmp:log($routes):)
+	let $path-matches as element(r:route)* :=  
 		for $r in $routes/r:route
 		where
-			    r:matches-method($r/r:method,$method) 
-			and r:matches-path($r/r:path, $path)
-			and r:matches-privilege($r/r:privilege)
+			    r:matches-path($r/r:path, $path)
 			and r:matches-parameters($r/r:parameters, $params)
-			and r:matches-accept($r/r:accept, $accept)
-		(:order by xs:int($r/@priority) descending:)
 		return $r
-	return 
-		(:let $_ := xdmp:log(string-join(($path, $matches[1]/r:path, $matches[1]/r:resolution), ", ")):)
-		if($matches) then 
-			replace(
-				$path, 
-				r:adjust-for-trailing-slash($matches[1]/r:path, $matches[1]/r:path/@trailing-slash), 
-				$matches[1]/r:resolution
-			) 
-		else 
-			(: TODO: I'm not sure of the best way to propagate errors. :)
-			concat(data($routes/r:error),"?url=", $url, "&amp;code=404")
+	return
+		(: If no paths, including query string, matches -> 404 Not Found :)
+		if(count($path-matches) eq 0) then
+			r:compose-error($routes, $url, 404, "Not Found")
+		else
+			let $method-matches := 
+				for $r in $path-matches
+				where r:matches-method($r/r:method,$method)
+				return $r 
+			return
+				(: If no method matches -> 405 Method Not Allowed :) 
+				if(count($method-matches) eq 0) then
+					r:compose-error($routes, $url, 405, "Method Not Allowed")
+				else
+					let $privilege-matches :=
+						for $r in $method-matches
+						where r:matches-privilege($r/r:privilege)
+						return $r
+					return
+						(: If incorrect priv -> 403 Forbidden :) 
+						if(count($privilege-matches) eq 0) then
+							r:compose-error($routes, $url, 403, "Forbidden")
+						else
+							let $accept-matches :=
+								for $r in $method-matches
+								where r:matches-accept($r/r:accept, $accept)
+								return $r
+							return
+								(: If no acceptable content-type -> 406 Not Acceptable :)
+								if(count($accept-matches) eq 0) then
+									r:compose-error($routes, $url, 406, "Not Acceptable")
+								else
+									let $matches := (
+										for $r in $accept-matches
+										order by xs:int($r/@priority) descending
+										return $r
+									)[1]
+									return 
+										if($matches) then 
+											replace(
+												$path, 
+												r:adjust-for-trailing-slash($matches[1]/r:path, $matches[1]/r:path/@trailing-slash), 
+												$matches[1]/r:resolution
+											) 
+									else 
+										r:compose-error($routes, $url, 400, "Bad Request")	
 };
 
 declare function r:matches-privilege($priv-test as element(r:privilege)?) as xs:boolean {
@@ -95,4 +127,15 @@ declare function r:matches-method($method-test as element(r:method)?, $method) a
 	if(empty($method-test) or "*" = $method-test) then
 		true()
 	else tokenize(data($method-test), "\s*,\s*") = $method
+};
+
+declare function r:compose-error($routes as element(r:routes), $url as xs:string, $code as xs:integer, $message as xs:string?) {
+	let $error as element(r:error) := $routes/r:error
+	let $query-string as xs:string := string-join((
+		concat("url=", $url),
+		concat("code=", xs:string($code)),
+		if($message) then concat("msg=", xdmp:url-encode($message)) else ""
+	), "&amp;")
+	return
+		concat($error,"?", $query-string)
 };
