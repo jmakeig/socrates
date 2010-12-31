@@ -1,6 +1,8 @@
 File system only: Create $MLHOME/Modules/Socrates and soft link src to the src folder in the repo. Make sure all of the files import amped modules using the absolute path (e.g. /Socrates/src/lib/router.xqy)
 
 
+Security
+==========================================================================================
 Create execute priv: socrates-execute, http://marklogic.com/socrates/execute
 Create role socrates-reader
   Add priv socrates-execute
@@ -25,7 +27,14 @@ Create amps for socrates-internal role
 	{http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy
 	{http://marklogic.com/router}redirect-response in /Socrates/src/lib/router.xqy
 
-
+App Server
+==========================================================================================
+Collation: http://marklogic.com/collation/codepoint
+Authetication: application-level
+Default user: socrates-anon
+Privilege: socrates-execute
+Error handler: error.xqy
+Rewriter: dispatcher.xqy
 
 
 Make sure socrates-contributors can read and update questions

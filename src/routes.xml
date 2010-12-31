@@ -46,5 +46,5 @@
     <resolution>add-response.xqy?id=$1</resolution>
     <privilege action="execute">http://marklogic.com/socrates/execute</privilege>
   </route>
-  <error>error.xqy</error>
+  <error>trap.xqy</error>
 </routes> 

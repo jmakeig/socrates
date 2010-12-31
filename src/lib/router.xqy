@@ -99,7 +99,7 @@ declare function r:resolve-matched-route($route as element(r:route), $path) as x
 			let $code as xs:integer := if($route/r:redirect/@type eq "permanent") then 301 else 302
 			let $msg as xs:string := r:get-response-message($code)
 			(: TODO: error.xqy should NOT be hard-coded (and it's misnamed) :)
-			return concat("error.xqy?url=", $path, "&amp;code=", xs:string($code), "&amp;msg=", $msg, "&amp;location=", $resolution)
+			return concat("trap.xqy?url=", $path, "&amp;code=", xs:string($code), "&amp;msg=", $msg, "&amp;location=", $resolution)
 		else 
 			error(xs:QName("r:NORESOLUTIONORREDIRECT"), "The route must either have a resolution or a redirector element") 
 };
