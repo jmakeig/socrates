@@ -21,7 +21,7 @@ module namespace r="http://marklogic.com/router";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare option xdmp:mapping "false";
 
-(: Amped :)
+(: Amped to socrates-internal :)
 declare function r:read-routes($path as xs:string) as element(r:routes) {
 	xdmp:invoke($path)
 };
@@ -155,6 +155,13 @@ declare function r:matches-method($method-test as element(r:method)?, $method) a
 	else tokenize(data($method-test), "\s*,\s*") = $method
 };
 
+declare function r:matches-user-agent($user-agent-test as element(r:user-agent)?, $user-agent) as xs:boolean {
+	if(empty($user-agent-test) or "*" = $user-agent-test) then
+		true()
+	else matches($user-agent, $user-agent-test)
+};
+
+
 declare function r:compose-error($routes as element(r:routes), $url as xs:string, $code as xs:integer, $message as xs:string?) {
 	let $error as element(r:error) := $routes/r:error
 	let $query-string as xs:string := string-join((
@@ -166,6 +173,7 @@ declare function r:compose-error($routes as element(r:routes), $url as xs:string
 		concat($error,"?", $query-string)
 };
 
+(: Amped to socrates-internal :)
 declare function r:redirect-response($name as xs:string, $type as xs:integer?)  as  empty-sequence() {
 	(
 		xdmp:add-response-header("Location", $name),
