@@ -2,13 +2,22 @@ File system only: Create $MLHOME/Modules/Socrates and soft link src to the src f
 
 
 Create execute priv: socrates-execute, http://marklogic.com/socrates/execute
+Create role socrates-reader
+  Add priv socrates-execute
 Create role socrates-contributor
+  Inherit socrates-reader
 	Add socrates-execute, any-uri, and any-collection privs
-	Add default permissions socrates-contributor -> read, update
+	Add default permissions
+	 socrates-reader -> read 
+	 socrates-contributor -> read, update
 Create role socrates-curator
 	Inherit socrates-contributor
-Create users curt, connie
-	Add socrates-contributor, socrates-curator roles to curt and socrates-contributor to connie
+Create user socrates-anon
+  Add socrates-reader role
+Create user connie (password: c)
+	Add socrates-contributor role
+Create user curt (password: c)
+  Add socrates-curator role
 Create socrates-internal role
 	Add xdmp:invoke, xdmp:xslt-invoke, and xdmp:add-response-header privs
 Create amps for socrates-internal role
@@ -23,9 +32,9 @@ Make sure socrates-contributors can read and update questions
 	(: Update permissions :)	
 	xquery version "1.0-ml";
 	for $i in collection()
-	return xdmp:document-add-permissions(
+	return xdmp:document-set-permissions(
 		xdmp:node-uri($i), (
-			xdmp:permission("socrates-contributor", "read"),
+			xdmp:permission("socrates-reader", "read"),
 			xdmp:permission("socrates-contributor", "update")
 		)
 	)
