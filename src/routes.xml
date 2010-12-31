@@ -28,12 +28,13 @@
     <method>POST</method>
     <path trailing-slash="ignore">^/questions$</path>
     <resolution>create-new.xqy</resolution>
-    <privilege action="execute">http://marklogic.com/socrates/execute</privilege>
+    <privilege>http://marklogic.com/socrates/new-question</privilege>
   </route>
   <route>
     <method>GET</method>
     <path trailing-slash="ignore">^/questions/new$</path>
     <resolution>new.xqy</resolution>
+    <privilege>http://marklogic.com/socrates/new-question</privilege>
   </route>
   <route>
     <method>GET</method>
@@ -47,4 +48,5 @@
     <privilege action="execute">http://marklogic.com/socrates/execute</privilege>
   </route>
   <error>trap.xqy</error>
+  <authenticate>/login</authenticate>
 </routes> 

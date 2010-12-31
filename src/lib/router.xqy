@@ -120,7 +120,7 @@ declare function r:matches-privilege($priv-test as element(r:privilege)?) as xs:
 	if($priv-test) then
 		let $_ := xdmp:log($priv-test)
 		return
-		xdmp:has-privilege($priv-test, ($priv-test/@action, "execute")[1])
+		xdmp:has-privilege($priv-test, "execute")
 	else
 		true()
 };

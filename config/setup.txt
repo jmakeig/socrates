@@ -3,12 +3,14 @@ File system only: Create $MLHOME/Modules/Socrates and soft link src to the src f
 
 Security
 ==========================================================================================
-Create execute priv: socrates-execute, http://marklogic.com/socrates/execute
+Create execute privs 
+  socrates-execute, http://marklogic.com/socrates/execute
+  socrates-new-question, http://marklogic.com/socrates/new-question
 Create role socrates-reader
-  Add priv socrates-execute
+  Add privs socrates-execute, xdmp:get-session-field, xdmp:get-session-field-names, xdmp:set-session-field
 Create role socrates-contributor
   Inherit socrates-reader
-	Add socrates-execute, any-uri, and any-collection privs
+	Add privs socrates-execute, socrates-new-question, any-uri, any-collection privs
 	Add default permissions
 	 socrates-reader -> read 
 	 socrates-contributor -> read, update
