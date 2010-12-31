@@ -20,6 +20,8 @@ xquery version "1.0-ml";
 import module namespace html="http://marklogic.com/jmakeig/html" at "/Socrates/src/lib/html-utils.xqy";
 import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
 declare namespace x="http://www.w3.org/1999/xhtml";
+declare option xdmp:mapping "false";
+
 xdmp:set-response-content-type("text/html"),
 xdmp:set-response-encoding("utf-8"),
 html:html-serialize(

@@ -18,6 +18,7 @@
  :)
 xquery version "1.0-ml";
 module namespace html="http://marklogic.com/jmakeig/html";
+declare option xdmp:mapping "false";
 
 (::
  : Serialize a node as browser-friendly (X)HTML(5) using XSLT.

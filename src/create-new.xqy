@@ -19,6 +19,8 @@
 xquery version "1.0-ml";
 import module namespace html="http://marklogic.com/jmakeig/html" at "lib/html-utils.xqy";
 import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
+declare option xdmp:mapping "false";
+
 let $question as xs:string := xdmp:get-request-field("question") (: TODO: Need validation :)
 let $summary as xs:string := xdmp:get-request-field("summary") (: TODO: Need validation :)
 let $id as xs:string := string(xdmp:random())

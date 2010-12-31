@@ -21,6 +21,8 @@ import module namespace search = "http://marklogic.com/appservices/search" at "/
 import module namespace html="http://marklogic.com/jmakeig/html" at "/Socrates/src/lib/html-utils.xqy";
 import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
 declare namespace x="http://www.w3.org/1999/xhtml";
+declare option xdmp:mapping "false";
+
 let $q as xs:string? := (xdmp:get-request-field("q"), "")[1]
 return (
 	xdmp:set-response-content-type("text/html"),

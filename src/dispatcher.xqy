@@ -19,6 +19,7 @@
 xquery version "1.0-ml";
 import module namespace r="http://marklogic.com/router" at "/Socrates/src/lib/router.xqy";
 import module namespace s="http://marklogic.com/socrates" at "lib/socrates.xqy";
+declare option xdmp:mapping "false";
 
 let $url as xs:string := xdmp:get-request-url()
 let $method as xs:string := xdmp:get-request-method()

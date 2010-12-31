@@ -19,6 +19,7 @@
 xquery version "1.0-ml";
 module namespace s="http://marklogic.com/socrates";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
+declare option xdmp:mapping "false";
 
 declare variable $s:DATE_FORMAT as xs:string := "[MNn] [D], [Y], [h]:[m01] [PN]";
 
