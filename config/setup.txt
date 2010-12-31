@@ -6,6 +6,7 @@ Security
 Create execute privs 
   socrates-execute, http://marklogic.com/socrates/execute
   socrates-new-question, http://marklogic.com/socrates/new-question
+  socrates-debug, http://marklogic.com/socrates/debug
 Create role socrates-reader
   Add privs socrates-execute, xdmp:get-session-field, xdmp:get-session-field-names, xdmp:set-session-field
 Create role socrates-contributor
@@ -16,6 +17,7 @@ Create role socrates-contributor
 	 socrates-contributor -> read, update
 Create role socrates-curator
 	Inherit socrates-contributor
+	Add priv socrates-debug
 Create user socrates-anon
   Add socrates-reader role
 Create user connie (password: c)
