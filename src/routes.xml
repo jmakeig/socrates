@@ -3,8 +3,13 @@
        regular expression strings -->
   <route>
     <method>GET</method>
-    <path>^/q$</path>
+    <path trailing-slash="ignore">^/$</path>
     <redirect type="permanent">/questions</redirect>
+  </route>
+  <route>
+    <method>GET</method>
+    <path>^/favicon.ico$</path>
+    <redirect type="permanent">/assets/favicon.ico</redirect>
   </route>
   <route>
     <annotation>Pass-through for everything in the assets directory.</annotation>
@@ -13,10 +18,14 @@
     <resolution>$0</resolution>
   </route>
   <route>
-    <annotation>Pass-through for everything in the assets directory.</annotation>
     <method>GET</method>
     <path>^/login$</path>
     <resolution>login.xqy</resolution>
+  </route>
+  <route>
+    <method>POST</method>
+    <path>^/login$</path>
+    <resolution>login-handler.xqy</resolution>
   </route>
   <route>
     <method>GET</method>
@@ -45,7 +54,7 @@
     <method>POST</method>
     <path trailing-slash="ignore">{'^/questions/([0-9]{15,25})/responses$'}</path>
     <resolution>add-response.xqy?id=$1</resolution>
-    <privilege action="execute">http://marklogic.com/socrates/execute</privilege>
+    <privilege>http://marklogic.com/socrates/execute</privilege>
   </route>
   <error>trap.xqy</error>
   <authenticate>/login</authenticate>

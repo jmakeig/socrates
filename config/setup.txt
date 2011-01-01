@@ -30,6 +30,7 @@ Create amps for socrates-internal role
   {http://marklogic.com/jmakeig/html}html-serialize in /Socrates/src/lib/html-utils.xqy
 	{http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy
 	{http://marklogic.com/router}redirect-response in /Socrates/src/lib/router.xqy
+	{http://marklogic.com/socrates}render-view in /Socrates/src/lib/socrates.xqy
 
 App Server
 ==========================================================================================
@@ -44,7 +45,7 @@ Rewriter: dispatcher.xqy
 Make sure socrates-contributors can read and update questions
 	(: Update permissions :)	
 	xquery version "1.0-ml";
-	for $i in collection()
+	for $i in collection("http://marklogic.com/socrates/workflow/new")
 	return xdmp:document-set-permissions(
 		xdmp:node-uri($i), (
 			xdmp:permission("socrates-reader", "read"),

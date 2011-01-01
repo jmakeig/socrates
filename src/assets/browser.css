@@ -58,6 +58,11 @@ strong {
   font-weight: bold;
 }
 
+.error {
+  color: red;
+  font-weight: bold;
+}
+
 /* Overrides */
 .control {
   margin: 1em; 

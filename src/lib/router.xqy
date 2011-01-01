@@ -169,8 +169,10 @@ declare function r:compose-error($routes as element(r:routes), $url as xs:string
 		concat("code=", xs:string($code)),
 		if($message) then concat("msg=", xdmp:url-encode($message)) else ""
 	), "&amp;")
-	return
+	return (
+		xdmp:log(concat($error,"?", $query-string)),
 		concat($error,"?", $query-string)
+	)
 };
 
 (: Amped to socrates-internal :)

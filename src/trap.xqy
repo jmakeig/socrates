@@ -19,8 +19,9 @@ return (
 		r:redirect-response($location, $code)
 	else if($code eq 403) then
 		(
+			xdmp:log(concat("Redirected from ", $url)),
 			xdmp:set-session-field("login-referrer", $url),
-			r:redirect-response($routes/r:authenticate, 302)
+			r:redirect-response($routes/r:authenticate, 303)
 		)
 	else (
 		xdmp:set-response-content-type("text/html"),
@@ -39,6 +40,7 @@ return (
 						<h1>{concat($code, " " , $msg)}</h1>
 						{if($error:errors) then (<h2>Error</h2>,<p class="error"><strong>{data($error:errors[1]/error:format-string)}</strong></p>,<p class="error">{data($error:errors[1]/error:stack/error:frame[1]/error:uri)}, line {data($error:errors[1]/error:stack/error:frame[1]/error:line)}</p>,<pre>{xdmp:quote($error:errors)}</pre>) else () }
 						<h2>Context</h2>
+						<h3>Security</h3>
 						<h3>Session</h3>
 						{if(xdmp:get-session-field-names()) then
 							<ul>{for $s in xdmp:get-session-field-names()
