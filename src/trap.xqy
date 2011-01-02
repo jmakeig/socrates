@@ -19,7 +19,7 @@ return (
 		r:redirect-response($location, $code)
 	else if($code eq 403) then
 		(
-			xdmp:log(concat("Redirected from ", $url)),
+			xdmp:log(concat("403 dispatched from ", $url)),
 			xdmp:set-session-field("login-referrer", $url),
 			r:redirect-response($routes/r:authenticate, 303)
 		)

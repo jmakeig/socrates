@@ -23,6 +23,9 @@ declare option xdmp:mapping "false";
 let $url as xs:string := xdmp:get-request-url()
 let $method as xs:string := xdmp:get-request-method()
 let $accept as xs:string? := xdmp:get-request-header("Accept")
+let $user-agent as xs:string? := xdmp:get-request-header("User-Agent")
 let $options as element(r:routes) := r:read-routes("/routes.xml")
-return 
+return (
+	xdmp:log(concat("Dispatching ", string-join(($method, $url, $accept, $user-agent), ", "))),
 	r:route($options, $url, $method, $accept)
+)

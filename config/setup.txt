@@ -18,14 +18,14 @@ Create role socrates-contributor
 Create role socrates-curator
 	Inherit socrates-contributor
 	Add priv socrates-debug
+Create socrates-internal role
+	Add privs xdmp:invoke, xdmp:xslt-invoke, and xdmp:add-response-header
 Create user socrates-anon
   Add socrates-reader role
 Create user connie (password: c)
 	Add socrates-contributor role
 Create user curt (password: c)
   Add socrates-curator role
-Create socrates-internal role
-	Add xdmp:invoke, xdmp:xslt-invoke, and xdmp:add-response-header privs
 Create amps for socrates-internal role
   {http://marklogic.com/jmakeig/html}html-serialize in /Socrates/src/lib/html-utils.xqy
 	{http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy

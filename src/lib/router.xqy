@@ -178,7 +178,9 @@ declare function r:compose-error($routes as element(r:routes), $url as xs:string
 (: Amped to socrates-internal :)
 declare function r:redirect-response($name as xs:string, $type as xs:integer?)  as  empty-sequence() {
 	(
+		xdmp:log(concat("Redirect to ", $name)),
 		xdmp:add-response-header("Location", $name),
 		xdmp:set-response-code($type, r:get-response-message($type))
+		(:,xdmp:redirect-response("http://localhost:7777/login"):)
 	)
 };
