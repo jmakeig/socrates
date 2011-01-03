@@ -24,21 +24,16 @@ declare namespace xhtml="http://www.w3.org/1999/xhtml";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare option xdmp:mapping "false";
 
-(:
+
 declare function mvc:render-view($name as xs:string) as item()* {
-	s:render-view($name, (), ())
+	mvc:render-view($name, (), ())
 };
 
 declare function mvc:render-view($name as xs:string, $model as map:map?) as item()* {
-	s:render-view($name, $model, ())
+	mvc:render-view($name, $model, ())
 };
-:)
+
 declare function mvc:render-view($name as xs:string, $model as map:map?, $errors as map:map?) as item()* {
-	(:
-	$name,
-	xdmp:describe($model),
-	xdmp:describe($errors)
-	:)
 	let $rendered as item() := xdmp:invoke(
 		concat("/views/", $name (:, ".xqy":)),
 		(xs:QName("mvc:model"), ($model, map:map())[1], xs:QName("mvc:errors"), ($errors, map:map())[1])
