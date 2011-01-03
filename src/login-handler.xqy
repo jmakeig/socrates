@@ -1,6 +1,6 @@
 xquery version "1.0-ml";
 import module namespace r="http://marklogic.com/router" at "/Socrates/src/lib/router.xqy";
-import module namespace s="http://marklogic.com/socrates" at "/Socrates/src/lib/socrates.xqy";
+import module namespace mvc="http://marklogic.com/mvc" at "/Socrates/src/lib/mvc.xqy";
 declare option xdmp:mapping "false";
 
 let $user as xs:string := xdmp:get-request-field("user")
@@ -16,7 +16,7 @@ return if($login) then
 		303
 	)
 else 
-	s:render-view("login.html", (), map:map(
+	mvc:render-view("login.html", (), map:map(
 		<map:map xmlns:map="http://marklogic.com/xdmp/map">
 			<map:entry>
 				<map:key>failed-login</map:key>

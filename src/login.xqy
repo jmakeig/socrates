@@ -17,9 +17,7 @@
  :
  :)
 xquery version "1.0-ml";
-import module namespace html="http://marklogic.com/jmakeig/html" at "/Socrates/src/lib/html-utils.xqy";
-import module namespace s="http://marklogic.com/socrates" at "/Socrates/src/lib/socrates.xqy";
-declare namespace x="http://www.w3.org/1999/xhtml";
+import module namespace mvc="http://marklogic.com/mvc" at "/Socrates/src/lib/mvc.xqy";
 declare option xdmp:mapping "false";
 
-s:render-view("login.html", (), ())
+mvc:render-view("login.html", (), ())

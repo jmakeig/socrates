@@ -67,33 +67,3 @@ declare function s:get-url-user($id as xs:string) as xs:string {
 declare function s:get-url-login() as xs:string {
 	"/login"
 };
-
-(:
-declare function s:render-view($name as xs:string) as item()* {
-	s:render-view($name, (), ())
-};
-
-declare function s:render-view($name as xs:string, $model as map:map?) as item()* {
-	s:render-view($name, $model, ())
-};
-:)
-declare function s:render-view($name as xs:string, $model as map:map?, $errors as map:map?) as item()* {
-	(:
-	$name,
-	xdmp:describe($model),
-	xdmp:describe($errors)
-	:)
-	let $rendered as item() := xdmp:invoke(
-		concat("/views/", $name),
-		(xs:QName("s:model"), ($model, map:map())[1], xs:QName("s:errors"), ($errors, map:map())[1])
-	)
-	return
-		typeswitch ($rendered)
-			case element(xhtml:html) return (
-				xdmp:set-response-content-type("text/html"),
-				xdmp:set-response-encoding("utf-8"),
-				html:html-serialize($rendered)
-			)
-			default return $rendered
-};
-

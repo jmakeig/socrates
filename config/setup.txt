@@ -30,7 +30,7 @@ Create amps for socrates-internal role
   {http://marklogic.com/jmakeig/html}html-serialize in /Socrates/src/lib/html-utils.xqy
 	{http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy
 	{http://marklogic.com/router}redirect-response in /Socrates/src/lib/router.xqy
-	{http://marklogic.com/socrates}render-view in /Socrates/src/lib/socrates.xqy
+	{http://marklogic.com/mvc}render-view in /Socrates/src/lib/mvc.xqy
 
 App Server
 ==========================================================================================

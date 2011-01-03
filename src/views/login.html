@@ -18,9 +18,11 @@
  :)
 xquery version "1.0-ml";
 import module namespace s="http://marklogic.com/socrates" at "/lib/socrates.xqy";
+declare namespace mvc="http://marklogic.com/mvc";
 declare option xdmp:mapping "false";
-declare variable $s:model as map:map? external;
-declare variable $s:errors as map:map? external;
+
+declare variable $mvc:model as map:map? external;
+declare variable $mvc:errors as map:map? external;
 
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 	<head>
@@ -32,8 +34,8 @@ declare variable $s:errors as map:map? external;
 		<h1>Login</h1>
 		<form action="{s:get-url-login()}" method="post">
 			{
-				if(map:get($s:errors, "failed-login")) then
-				<div class="error">{map:get($s:errors, "failed-login")}</div>
+				if(map:get($mvc:errors, "failed-login")) then
+				<div class="error">{map:get($mvc:errors, "failed-login")}</div>
 				else ()
 			}
 			<div class="control editor">
