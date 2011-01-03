@@ -24,6 +24,21 @@ declare namespace xhtml="http://www.w3.org/1999/xhtml";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare option xdmp:mapping "false";
 
+(::
+ : Get a view, but don't render it. This is useful for views that import other views.
+ :
+ : @param $name
+ : @param $model
+ : @param $model
+ : @return 
+ :)
+declare function mvc:get-view($name as xs:string, $model as map:map?, $errors as map:map?) as item()* {
+	(: No need for another amp to get the invoke. This should only be called from within a view, so presumably the amp still holds. :)
+	xdmp:invoke(
+		concat("/views/", $name (:, ".xqy":)),
+		(xs:QName("mvc:model"), ($model, map:map())[1], xs:QName("mvc:errors"), ($errors, map:map())[1])
+	)
+};
 
 declare function mvc:render-view($name as xs:string) as item()* {
 	mvc:render-view($name, (), ())
@@ -33,11 +48,9 @@ declare function mvc:render-view($name as xs:string, $model as map:map?) as item
 	mvc:render-view($name, $model, ())
 };
 
+(: Amped to socrates-internal :)
 declare function mvc:render-view($name as xs:string, $model as map:map?, $errors as map:map?) as item()* {
-	let $rendered as item() := xdmp:invoke(
-		concat("/views/", $name (:, ".xqy":)),
-		(xs:QName("mvc:model"), ($model, map:map())[1], xs:QName("mvc:errors"), ($errors, map:map())[1])
-	)
+	let $rendered as item()* := mvc:get-view($name, $model, $errors)
 	return
 		typeswitch ($rendered)
 			case element(xhtml:html) return (

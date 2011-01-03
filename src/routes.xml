@@ -28,6 +28,11 @@
     <resolution>login-handler.xqy</resolution>
   </route>
   <route>
+    <method>POST</method>
+    <path>^/logout$</path>
+    <resolution>logout-handler.xqy</resolution>
+  </route>
+  <route>
     <method>GET</method>
     <path trailing-slash="ignore">^/questions$</path>
     <!-- Need to capture the query string. -->

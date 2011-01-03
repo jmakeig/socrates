@@ -67,3 +67,7 @@ declare function s:get-url-user($id as xs:string) as xs:string {
 declare function s:get-url-login() as xs:string {
 	"/login"
 };
+
+declare function s:get-url-logout() as xs:string {
+	"/logout"
+};

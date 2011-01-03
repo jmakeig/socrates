@@ -18,7 +18,7 @@
  :)
 xquery version "1.0-ml";
 import module namespace s="http://marklogic.com/socrates" at "/lib/socrates.xqy";
-declare namespace mvc="http://marklogic.com/mvc";
+import module namespace mvc="http://marklogic.com/mvc" at "/Socrates/src/lib/mvc.xqy";
 declare option xdmp:mapping "false";
 
 declare variable $mvc:model as map:map? external;
@@ -40,6 +40,7 @@ return
 		</script>
 	</head>
 	<body>
+		{mvc:get-view("header.html", $mvc:model, $mvc:errors)}
 		<h1>{data($question/s:summary)}</h1>
 		<div>{(xdmp:log($question), $question/s:detail/*)}</div>
 		<form action="{s:get-url-responses(data($question/@id))}" method="post" class="new-response">
@@ -70,8 +71,6 @@ return
 				<div class="date">{format-dateTime($response/@created, $s:DATE_FORMAT)}</div>
 				<div class="comment">{$response/s:comment/*}</div>
 			</div>}
-		<div class="actions">
-			<ul><li><a href="{s:get-url-question-new()}">New</a></li><li><a href="{s:get-url-questions()}">All</a></li></ul>
-		</div>
+		{mvc:get-view("footer.html", $mvc:model, $mvc:errors)}
 	</body>
 </html>
