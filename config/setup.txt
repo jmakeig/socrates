@@ -1,4 +1,4 @@
-File system only: Create $MLHOME/Modules/Socrates and soft link src to the src folder in the repo. Make sure all of the files import amped modules using the absolute path (e.g. /Socrates/src/lib/router.xqy)
+File system only: ln -s $SOCRATES/src/lib $MLHOME/Modules/lib
 
 
 Security
@@ -28,10 +28,10 @@ Create user connie (password: c)
 Create user curt (password: c)
   Add socrates-curator role
 Create amps for socrates-internal role
-  {http://marklogic.com/jmakeig/html}html-serialize in /Socrates/src/lib/html-utils.xqy
-	{http://marklogic.com/router}read-routes in /Socrates/src/lib/router.xqy
-	{http://marklogic.com/router}redirect-response in /Socrates/src/lib/router.xqy
-	{http://marklogic.com/mvc}render-view in /Socrates/src/lib/mvc.xqy
+  {http://marklogic.com/jmakeig/html}html-serialize in /lib/html-utils.xqy
+	{http://marklogic.com/router}read-routes in /lib/router.xqy
+	{http://marklogic.com/router}redirect-response in /lib/router.xqy
+	{http://marklogic.com/mvc}render-view in /lib/mvc.xqy
 
 App Server
 ==========================================================================================

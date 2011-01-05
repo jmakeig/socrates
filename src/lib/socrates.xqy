@@ -18,7 +18,7 @@
  :)
 xquery version "1.0-ml";
 module namespace s="http://marklogic.com/socrates";
-import module namespace html="http://marklogic.com/jmakeig/html" at "/Socrates/src/lib/html-utils.xqy";
+import module namespace html="http://marklogic.com/jmakeig/html" at "/lib/html-utils.xqy";
 declare namespace xhtml="http://www.w3.org/1999/xhtml";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";

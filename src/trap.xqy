@@ -18,9 +18,9 @@
  :)
 xquery version "1.0-ml";
 
-import module namespace html="http://marklogic.com/jmakeig/html" at "/Socrates/src/lib/html-utils.xqy";
-import module namespace r="http://marklogic.com/router" at "/Socrates/src/lib/router.xqy";
-import module namespace mvc="http://marklogic.com/mvc" at "/Socrates/src/lib/mvc.xqy";
+import module namespace html="http://marklogic.com/jmakeig/html" at "/lib/html-utils.xqy";
+import module namespace r="http://marklogic.com/router" at "/lib/router.xqy";
+import module namespace mvc="http://marklogic.com/mvc" at "/lib/mvc.xqy";
 
 declare option xdmp:mapping "false";
 

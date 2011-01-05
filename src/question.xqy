@@ -17,7 +17,7 @@
  :
  :)
 xquery version "1.0-ml";
-import module namespace mvc="http://marklogic.com/mvc" at "/Socrates/src/lib/mvc.xqy";
+import module namespace mvc="http://marklogic.com/mvc" at "/lib/mvc.xqy";
 declare namespace s="http://marklogic.com/socrates";
 declare option xdmp:mapping "false";
 
