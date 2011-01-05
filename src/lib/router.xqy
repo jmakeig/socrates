@@ -94,6 +94,7 @@ declare function r:resolve-matched-route($route as element(r:route), $path) as x
 	)
 	return
 		if($route/r:resolution) then
+		 (: TODO: This drops the query string on the floor. :)
 			$resolution
 		else if($route/r:redirect) then
 			let $code as xs:integer := if($route/r:redirect/@type eq "permanent") then 301 else 302
