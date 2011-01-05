@@ -64,13 +64,16 @@ return
 		{for $response in $question/s:responses/s:response
 		order by $response/@created descending
 		return 
-			<div class="response" id="response-{data($response/@id)}">
+			<div class="response {if($response[s:answered]) then 'answered' else ()}" id="response-{data($response/@id)}">
 				<div class="respondent">Response from  
 					<a href="{s:get-url-user($response/s:respondent)}">{data($response/s:respondent)}</a>
 				</div>
 				<div class="date">{format-dateTime($response/@created, $s:DATE_FORMAT)}</div>
 				<div class="comment">{$response/s:comment/*}</div>
-				{if(xdmp:has-privilege("http://marklogic.com/socrates/set-answer", "execute")) then
+				{if(
+					$response[not(s:answered)] 
+					and xdmp:has-privilege("http://marklogic.com/socrates/set-answer", "execute")
+				) then
 					<form action="{s:get-url-response-answer($question/@id, $response/@id)}" method="post">
 						<div><button>Answer</button></div>
 					</form>

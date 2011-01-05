@@ -109,6 +109,11 @@ strong {
   margin: 2em 0;
 }
 
+.response.answered {
+  background: green;
+  color: white;  
+}
+
 .editor textarea {
   height: 24em;
 }
