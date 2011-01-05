@@ -15,7 +15,8 @@ return if($login) then
 		xdmp:get-session-field("login-referrer", "/"),
 		303
 	)
-else 
+else (
+  xdmp:set-response-code(400, "Invalid Login Credentials"),
 	mvc:render-view("login.html", (), map:map(
 		<map:map xmlns:map="http://marklogic.com/xdmp/map">
 			<map:entry>
@@ -25,3 +26,4 @@ else
 		</map:map>
 		)
 	)
+)

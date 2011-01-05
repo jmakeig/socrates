@@ -61,6 +61,12 @@
     <resolution>add-response.xqy?id=$1</resolution>
     <privilege>http://marklogic.com/socrates/execute</privilege>
   </route>
+  <route>
+    <method>POST</method>
+    <path trailing-slash="ignore">{'^/questions/([0-9]{15,25})/responses/([0-9]{15,25})/answer$'}</path>
+    <resolution>answer.xqy?question=$1&amp;response=$2</resolution>
+    <privilege>http://marklogic.com/socrates/execute</privilege>
+  </route>
   <error>trap.xqy</error>
   <authenticate>/login</authenticate>
 </routes> 

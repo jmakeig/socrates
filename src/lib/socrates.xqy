@@ -71,3 +71,7 @@ declare function s:get-url-login() as xs:string {
 declare function s:get-url-logout() as xs:string {
 	"/logout"
 };
+
+declare function s:get-url-response-answer($question as xs:string, $response as xs:string) as xs:string {
+	string-join(("/questions", escape-html-uri($question), "responses", escape-html-uri($response), "answer"), "/")
+};

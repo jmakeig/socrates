@@ -70,6 +70,12 @@ return
 				</div>
 				<div class="date">{format-dateTime($response/@created, $s:DATE_FORMAT)}</div>
 				<div class="comment">{$response/s:comment/*}</div>
+				{if(xdmp:has-privilege("http://marklogic.com/socrates/set-answer", "execute")) then
+					<form action="{s:get-url-response-answer($question/@id, $response/@id)}" method="post">
+						<div><button>Answer</button></div>
+					</form>
+					else ()
+				}
 			</div>}
 		{mvc:get-view("footer.html", $mvc:model, $mvc:errors)}
 	</body>
