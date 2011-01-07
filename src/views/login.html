@@ -58,6 +58,7 @@ declare variable $mvc:errors as map:map? external;
 	        </div>
 		    </div>
 			</div>
+			<input type="text" name="referer" value="{xdmp:get-request-header("Referer")}"/>
 			<div class="actions">
 				<button>Login</button>
 			</div>

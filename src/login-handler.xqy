@@ -11,10 +11,16 @@ let $login as xs:boolean := xdmp:login(
 	true()
 )
 return if($login) then 
-	r:redirect-response(
-		xdmp:get-session-field("login-referrer", "/"),
-		303
-	)
+	let $target as xs:string := (
+		(: When a privileged request is intercepted :)
+		xdmp:get-session-field("login-referrer"),
+		(: When the user explicitly asks to login :)
+		xdmp:get-request-field("referer"),
+		(: Other :)
+		"/"
+	)[1]
+	let $_ := (xdmp:log($target), xdmp:set-session-field("login-referrer",()))
+	return r:redirect-response($target, 303)
 else (
   xdmp:set-response-code(400, "Invalid Login Credentials"),
 	mvc:render-view("login.html", (), map:map(

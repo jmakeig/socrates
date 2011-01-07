@@ -22,8 +22,17 @@ declare option xdmp:mapping "false";
 
 declare variable $mvc:model as map:map? external;
 declare variable $mvc:errors as map:map? external;
+
+let $user := xdmp:get-current-user()
+return
 <header xmlns="http://www.w3.org/1999/xhtml">
+	{
+	if($user eq "socrates-anon") then
+	<a href="/login">Login</a>
+	else
   <form action="/logout" method="post">
-  	{xdmp:get-current-user()}
-  	<button>Logout</button></form>
+  	{$user}
+  	<button>Logout</button>
+  </form>
+  }
 </header>
