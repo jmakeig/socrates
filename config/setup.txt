@@ -7,12 +7,13 @@ Create execute privs
   socrates-execute, http://marklogic.com/socrates/execute
   socrates-new-question, http://marklogic.com/socrates/new-question
   socrates-set-answer, http://marklogic.com/socrates/set-answer
+  socrates-add-response, http://marklogic.com/socrates/add-response
   socrates-debug, http://marklogic.com/socrates/debug
 Create role socrates-reader
   Add privs socrates-execute, xdmp:get-session-field, xdmp:get-session-field-names, xdmp:set-session-field
 Create role socrates-contributor
   Inherit socrates-reader
-	Add privs socrates-execute, socrates-new-question, any-uri, any-collection privs
+	Add privs socrates-execute, socrates-new-question, socrates-add-response, any-uri, any-collection privs
 	Add default permissions
 	 socrates-reader -> read 
 	 socrates-contributor -> read, update

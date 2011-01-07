@@ -43,24 +43,28 @@ return
 		{mvc:get-view("header.html", $mvc:model, $mvc:errors)}
 		<h1>{data($question/s:summary)}</h1>
 		<div>{(xdmp:log($question), $question/s:detail/*)}</div>
-		<form action="{s:get-url-responses(data($question/@id))}" method="post" class="new-response">
-			<div class="control editor">
-	    <div class="label">
-	      <label for="question">Contribute a Response</label>
-	      <div class="guide"><a class="preview-action">Preview →</a></div>
-	    </div>
-	    <div class="input">
-	    	<div class="front">
-	        <textarea id="response"/>
-					<input type="hidden" name="response" id="markup" />
-        </div>
-        <div class="back">
-		    	<div id="preview"/>
+		{if(xdmp:has-privilege("http://marklogic.com/socrates/add-response", "execute")) then
+			<form action="{s:get-url-responses(data($question/@id))}" method="post" class="new-response">
+				<div class="control editor">
+		    <div class="label">
+		      <label for="question">Contribute a Response</label>
+		      <div class="guide"><a class="preview-action">Preview →</a></div>
 		    </div>
-	    </div>
-		</div>
-			<div><button>Add…</button></div>
-		</form>
+		    <div class="input">
+		    	<div class="front">
+		        <textarea id="response"/>
+						<input type="hidden" name="response" id="markup" />
+	        </div>
+	        <div class="back">
+			    	<div id="preview"/>
+			    </div>
+		    </div>
+			</div>
+				<div><button>Add…</button></div>
+			</form>
+		else
+			<div><a href="{s:get-url-login()}">Login</a> to respond.</div>
+		}
 		{for $response in $question/s:responses/s:response
 		order by $response/@created descending
 		return 
