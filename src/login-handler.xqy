@@ -19,7 +19,7 @@ return if($login) then
 		(: Other :)
 		"/"
 	)[1]
-	let $_ := (xdmp:log($target), xdmp:set-session-field("login-referrer",()))
+	let $_ := xdmp:set-session-field("login-referrer",())
 	return r:redirect-response($target, 303)
 else (
   xdmp:set-response-code(400, "Invalid Login Credentials"),

@@ -20,4 +20,11 @@ xquery version "1.0-ml";
 import module namespace mvc="http://marklogic.com/mvc" at "/lib/mvc.xqy";
 declare option xdmp:mapping "false";
 
-mvc:render-view("login.html", (), ())
+mvc:render-view("login.html", map:map(
+	<map:map xmlns:map="http://marklogic.com/xdmp/map">
+		<map:entry>
+			<map:key>referer</map:key>
+			<map:value>{xdmp:get-request-header("Referer")}</map:value>
+		</map:entry>
+	</map:map>
+), ())
