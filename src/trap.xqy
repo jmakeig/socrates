@@ -57,7 +57,7 @@ return (
 					</head>
 					<body>
 						<h1>{concat($code, " " , $msg)}</h1>
-						{if($error:errors) then (<h2>Error</h2>,<p class="error"><strong>{data($error:errors[1]/error:format-string)}</strong></p>,<p class="error">{data($error:errors[1]/error:stack/error:frame[1]/error:uri)}, line {data($error:errors[1]/error:stack/error:frame[1]/error:line)}</p>,<pre>{xdmp:quote($error:errors)}</pre>) else () }
+						{if($error:errors and $code >= 500) then (<h2>Error</h2>,<p class="error"><strong>{data($error:errors[1]/error:format-string)}</strong></p>,<p class="error">{data($error:errors[1]/error:stack/error:frame[1]/error:uri)}, line {data($error:errors[1]/error:stack/error:frame[1]/error:line)}</p>,<pre>{xdmp:quote($error:errors)}</pre>) else () }
 						<h2>Context</h2>
 						<h3>Security</h3>
 						<h3>Session</h3>

@@ -30,7 +30,8 @@ declare variable $mvc:errors as map:map? external;
 		<link href="/assets/browser.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
-		<form><div><input type="search" name="q" id="q"/></div></form>
+		{mvc:get-view("header.html", $mvc:model, $mvc:errors)}
+		<form><div><input type="search" name="q" id="q" value="{map:get($mvc:model, "q")}"/></div></form>
 		{
 		for $result in map:get($mvc:model, "results")
     	let $question as element(s:question) := doc($result/@uri)/s:question

@@ -27,20 +27,19 @@ declare function r:read-routes($path as xs:string) as element(r:routes) {
 };
 
 declare function r:route($routes as element(r:routes)) as xs:string? {
-	r:route($routes, xdmp:get-request-path(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
+	r:route($routes, xdmp:get-request-url(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
 };
 
 (: TODO: This is ugly and should be broken into smaller functions for testing and readability. :)
 declare function r:route($routes as element(r:routes), $url as xs:string, $method as xs:string, $accept as xs:string?) as xs:string? {
 	let $tokens := tokenize($url, "\?")
 	let $path := $tokens[1]
-	let $params := tokenize($tokens[2], "&amp;")
-	(:let $_ := xdmp:log($routes):)
+	let $params := $tokens[2]
 	let $path-matches as element(r:route)* :=  
 		for $r in $routes/r:route
 		where
 			    r:matches-path($r/r:path, $path)
-			and r:matches-parameters($r/r:parameters, $params)
+			and r:matches-parameters($r/r:parameters, tokenize($tokens[2], "&amp;"))
 		return $r
 	return
 		(: If no paths, including query string, matches -> 404 Not Found :)
@@ -81,16 +80,19 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 									)[1]
 									return 
 										if(count($matches) eq 1) then 
-											r:resolve-matched-route($matches, $path) 
+											r:resolve-matched-route($matches, $path, $params) 
 									else 
 										r:compose-error($routes, $url, 400, "Bad Request")	
 };
 
-declare function r:resolve-matched-route($route as element(r:route), $path) as xs:string {
-	let $resolution := replace(
-		$path, 
-		r:adjust-for-trailing-slash($route/r:path, $route/r:path/@trailing-slash), 
-		($route/r:resolution, $route/r:redirect)[1]
+declare function r:resolve-matched-route($route as element(r:route), $path as xs:string, $params as xs:string?) as xs:string {
+	let $resolution := concat( 
+		replace(
+			$path, 
+			r:adjust-for-trailing-slash($route/r:path, $route/r:path/@trailing-slash), 
+			($route/r:resolution, $route/r:redirect)[1]
+		),
+		if($params) then concat("?", $params) else ""
 	)
 	return
 		if($route/r:resolution) then
@@ -131,7 +133,14 @@ declare function r:matches-accept($accept-test as element(r:accept)?, $accept as
 };
 
 declare function r:matches-parameters($param-test as element(r:parameters)?, $params as xs:string?) as xs:boolean {
-	true()
+	if(empty($param-test) or "*" eq $param-test) then
+		true()
+	else
+		let $tests := tokenize($param-test, "\s*,\s*")
+		let $ps := for $p in $params return tokenize($p, "=")[1]
+		let $_ := xdmp:log(concat("tests: ", xdmp:describe($tests)))
+		let $_ := xdmp:log(concat("ps: ", xdmp:describe($ps)))
+		return $tests = $ps
 };
 
 declare function r:adjust-for-trailing-slash($pattern, $trailing-slash) as xs:string {

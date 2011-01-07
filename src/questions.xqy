@@ -30,6 +30,10 @@ return
 	mvc:render-view("questions.html", map:map(
 		<map:map xmlns:map="http://marklogic.com/xdmp/map">
 			<map:entry>
+				<map:key>q</map:key>
+				<map:value>{$q}</map:value>
+			</map:entry>
+			<map:entry>
 				<map:key>results</map:key>
 				<map:value>{$results}</map:value>
 			</map:entry>
