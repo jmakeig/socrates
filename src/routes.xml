@@ -35,15 +35,7 @@
   <route>
     <method>GET</method>
     <path trailing-slash="ignore">^/questions$</path>
-    <!-- Need to capture the query string. -->
-    <resolution>questions.xqy$1</resolution>
-  </route>
-  <route>
-    <method>GET</method>
-    <path trailing-slash="ignore">^/questions$</path>
-    <!-- Need to capture the query string. -->
-    <resolution>questions.xqy$1</resolution>
-    <parameters>q</parameters>
+    <resolution>questions.xqy</resolution>
   </route>
   <route>
     <method>POST</method>
