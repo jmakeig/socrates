@@ -41,6 +41,7 @@ return
 	</head>
 	<body>
 		{mvc:get-view("header.html", $mvc:model, $mvc:errors)}
+		{(:if(map:count($mvc:errors) > 0) then (attribute class {"error"}, "Error") else ():)}
 		<h1>{data($question/s:summary)}</h1>
 		<div>{(xdmp:log($question), $question/s:detail/*)}</div>
 		{if(xdmp:has-privilege("http://marklogic.com/socrates/add-response", "execute")) then

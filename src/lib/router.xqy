@@ -194,3 +194,20 @@ declare function r:redirect-response($name as xs:string, $type as xs:integer?)  
 		(:,xdmp:redirect-response("http://localhost:7777/login"):)
 	)
 };
+
+(::
+ : Raise an error and route its handling to the common error page.
+ :
+ : @param code The HTTP error code. The 400 range is the only thing that really makes sense here.
+ : @param errors Information about the error to convey to the error view
+ : @return The rendered error
+ :)
+declare function r:raise-error($code as xs:integer, $errors as map:map) as item()* {
+	xdmp:set-response-code($code, r:get-response-message($code)),
+	xdmp:invoke(
+		"/trap.xqy" (: TODO: Need to read this from the routes config :), (
+			xs:QName("error:errors"), $errors
+		), 
+    ()
+	)
+};
