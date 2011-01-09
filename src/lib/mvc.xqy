@@ -60,3 +60,23 @@ declare function mvc:render-view($name as xs:string, $model as map:map?, $errors
 			)
 			default return $rendered
 };
+
+(::
+ : Utility to create a map in one line.
+ :
+ : @param $key
+ : @param $value
+ : @return 
+ :)
+declare function mvc:model-create($key as xs:string, $value as item()*) as map:map {
+	let $model as map:map := map:map()
+	return (
+		map:put($model, $key, $value), 
+		$model
+	)
+};
+
+declare function mvc:model-put($model as map:map, $key as xs:string, $value as item()*) as map:map {
+	let $_ as empty-sequence() := map:put($model, $key, $value)
+	return $model
+};

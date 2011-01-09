@@ -18,7 +18,10 @@
  :)
 xquery version "1.0-ml";
 import module namespace search = "http://marklogic.com/appservices/search" at "/MarkLogic/appservices/search/search.xqy";
+import module namespace r="http://marklogic.com/router" at "/lib/router.xqy";
 import module namespace mvc="http://marklogic.com/mvc" at "/lib/mvc.xqy";
+import module namespace s="http://marklogic.com/socrates" at "/lib/socrates.xqy";
+
 declare option xdmp:mapping "false";
 
 let $q as xs:string? := xdmp:get-request-field("q", "")
@@ -26,17 +29,7 @@ let $options := <options xmlns="http://marklogic.com/appservices/search">
 		<return-query>true</return-query>
 	</options>
 let $results := search:search($q, $options)/search:result
-return 
-	mvc:render-view("questions.html", map:map(
-		<map:map xmlns:map="http://marklogic.com/xdmp/map">
-			<map:entry>
-				<map:key>q</map:key>
-				<map:value>{$q}</map:value>
-			</map:entry>
-			<map:entry>
-				<map:key>results</map:key>
-				<map:value>{$results}</map:value>
-			</map:entry>
-		</map:map>
-		), ()
-	)
+return
+	let $model as map:map := mvc:model-put(mvc:model-create("q", $q), "results", $results)
+	return mvc:render-view("questions.html", $model)
+	
