@@ -53,6 +53,7 @@
     <method>GET</method>
     <path trailing-slash="ignore">{'^/questions/([0-9]{15,25})$'}</path>
     <resolution>question.xqy?id=$1</resolution>
+    <accept>text/html</accept>
   </route>
   <route>
     <method>POST</method>

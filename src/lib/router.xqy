@@ -18,6 +18,7 @@
  :)
 xquery version "1.0-ml";
 module namespace r="http://marklogic.com/router";
+import module namespace http="http://marklogic.com/util/http" at "/lib/http.xqy";
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare option xdmp:mapping "false";
 
@@ -30,11 +31,23 @@ declare function r:route($routes as element(r:routes)) as xs:string? {
 	r:route($routes, xdmp:get-request-url(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
 };
 
+declare function r:parse-params($params as xs:string?) as map:map? {
+	if($params) then
+		let $map as map:map := map:map()
+		let $k-vs := tokenize($params, "&amp;")
+		let $_ as empty-sequence() := for $k-v in $k-vs
+			let $pair := tokenize($k-v, "=")
+			(: TODO: Need to handle mutiple keys :)
+			return map:put($map, $pair[1], $pair[2])
+		return (xdmp:log($map), $map) 
+	else ()
+};
+
 (: TODO: This is ugly and should be broken into smaller functions for testing and readability. :)
 declare function r:route($routes as element(r:routes), $url as xs:string, $method as xs:string, $accept as xs:string?) as xs:string? {
 	let $tokens := tokenize($url, "\?")
 	let $path := $tokens[1]
-	let $params := $tokens[2]
+	let $params := $tokens[2] (:r:parse-params($tokens[2]):)
 	let $path-matches as element(r:route)* :=  
 		for $r in $routes/r:route
 		where
@@ -80,12 +93,23 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 									)[1]
 									return 
 										if(count($matches) eq 1) then 
-											r:resolve-matched-route($matches, $path, $params) 
+											r:resolve-matched-route($matches (: route :), $path, $params, $accept) 
 									else 
 										r:compose-error($routes, $url, 400, "Bad Request")	
 };
 
-declare function r:resolve-matched-route($route as element(r:route), $path as xs:string, $params as xs:string?) as xs:string {
+declare function r:resolve-matched-route($route as element(r:route), $path as xs:string, $params as xs:string?, $accept as xs:string?) as xs:string {
+	(:let $_ := if($accept and $route/r:accept) then
+		xdmp:log(
+			concat("Preferred: ", http:variant-to-string(
+				http:preferred-variant(
+					http:parse-accept-header($accept)/http:variant, 
+					http:parse-accept-header(data($route/r:accept))/http:variant
+				)
+			))
+		)
+	else ()
+	:)
 	let $resolution := concat( 
 		replace(
 			$path, 
@@ -93,10 +117,20 @@ declare function r:resolve-matched-route($route as element(r:route), $path as xs
 			($route/r:resolution, $route/r:redirect)[1]
 		),
 		if($params) then concat("?", $params) else ""
+		(:
+		"?",
+		if(exists($params)) then 
+			string-join(
+				for $key in map:keys($params)
+				return string-join(($key, map:get($params, $key)), "="),
+				"&amp;"
+			)
+		else "",
+		:)
 	)
+	(:let $_ := xdmp:log($resolution):)
 	return
 		if($route/r:resolution) then
-		 (: TODO: This drops the query string on the floor. :)
 			$resolution
 		else if($route/r:redirect) then
 			let $code as xs:integer := if($route/r:redirect/@type eq "permanent") then 301 else 302
@@ -129,7 +163,13 @@ declare function r:matches-privilege($priv-test as element(r:privilege)?) as xs:
 };
 
 declare function r:matches-accept($accept-test as element(r:accept)?, $accept as xs:string?) as xs:boolean {
-	true()
+	if(empty($accept-test)) then 
+		true()
+	else
+		let $accept-variants as element(http:variant)* := http:parse-accept-header($accept)/http:variant
+		let $declared-variants as element(http:variant)* := http:parse-accept-header(data($accept-test))/http:variant
+		let $preferred-variants as element(http:variant)* := http:preferred-variant($accept-variants, $declared-variants)
+		return count($preferred-variants) > 0 
 };
 
 declare function r:matches-parameters($param-test as element(r:parameters)?, $params as xs:string?) as xs:boolean {
