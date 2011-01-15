@@ -31,23 +31,25 @@ declare function r:route($routes as element(r:routes)) as xs:string? {
 	r:route($routes, xdmp:get-request-url(), xdmp:get-request-method(), xdmp:get-request-header("Accept"))
 };
 
+(: TODO: This doesn't work. It won't parse repeated fields correctly (e.g. ?foo=bar&foo=baz) :)
+(:
 declare function r:parse-params($params as xs:string?) as map:map? {
 	if($params) then
 		let $map as map:map := map:map()
 		let $k-vs := tokenize($params, "&amp;")
 		let $_ as empty-sequence() := for $k-v in $k-vs
 			let $pair := tokenize($k-v, "=")
-			(: TODO: Need to handle mutiple keys :)
 			return map:put($map, $pair[1], $pair[2])
 		return (xdmp:log($map), $map) 
 	else ()
 };
+:)
 
 (: TODO: This is ugly and should be broken into smaller functions for testing and readability. :)
 declare function r:route($routes as element(r:routes), $url as xs:string, $method as xs:string, $accept as xs:string?) as xs:string? {
 	let $tokens := tokenize($url, "\?")
 	let $path := $tokens[1]
-	let $params := $tokens[2] (:r:parse-params($tokens[2]):)
+	let $params := http:parse-params()
 	let $path-matches as element(r:route)* :=  
 		for $r in $routes/r:route
 		where
@@ -98,37 +100,43 @@ declare function r:route($routes as element(r:routes), $url as xs:string, $metho
 										r:compose-error($routes, $url, 400, "Bad Request")	
 };
 
-declare function r:resolve-matched-route($route as element(r:route), $path as xs:string, $params as xs:string?, $accept as xs:string?) as xs:string {
-	(:let $_ := if($accept and $route/r:accept) then
-		xdmp:log(
-			concat("Preferred: ", http:variant-to-string(
+declare function r:resolve-matched-route($route as element(r:route), $path as xs:string, $params as map:map?, $accept as xs:string?) as xs:string {
+	(: TODO: This is the second time this is parsed and calculated during routing. :)
+	let $preferred-variant as xs:string? := 
+		if($route/r:accept) then
+			http:variant-to-string(
 				http:preferred-variant(
 					http:parse-accept-header($accept)/http:variant, 
 					http:parse-accept-header(data($route/r:accept))/http:variant
 				)
-			))
-		)
-	else ()
-	:)
-	let $resolution := concat( 
+			)
+		else ()
+	let $_ := if(exists($params) and exists($preferred-variant)) then 
+		map:put($params, "_variant", $preferred-variant) 
+		else ()
+	(:let $_ := xdmp:log(concat("Variant: ", http:variant-to-string(http:parse-accept-header((data($route/r:accept), "*/*")[1])/http:variant))):)
+	let $_ := xdmp:log(concat("PV: ", $preferred-variant))
+	let $url as xs:string :=  
 		replace(
 			$path, 
 			r:adjust-for-trailing-slash($route/r:path, $route/r:path/@trailing-slash), 
 			($route/r:resolution, $route/r:redirect)[1]
-		),
-		if($params) then concat("?", $params) else ""
-		(:
-		"?",
-		if(exists($params)) then 
+		)
+	let $query-string as xs:string := 	
+		if(exists($params) and xdmp:get-request-method() eq "GET") then 
 			string-join(
 				for $key in map:keys($params)
 				return string-join(($key, map:get($params, $key)), "="),
 				"&amp;"
 			)
-		else "",
-		:)
-	)
-	(:let $_ := xdmp:log($resolution):)
+		else ""
+	let $resolution as xs:string := concat(
+		$url,
+		if(contains($url, "?")) then "" else "?",
+		$query-string
+	) 
+		
+	let $_ := xdmp:log(concat("Resolution: ", $resolution))
 	return
 		if($route/r:resolution) then
 			$resolution
@@ -173,14 +181,15 @@ declare function r:matches-accept($accept-test as element(r:accept)?, $accept as
 };
 
 declare function r:matches-parameters($param-test as element(r:parameters)?, $params as xs:string?) as xs:boolean {
+	true()
+	(:
 	if(empty($param-test) or "*" eq $param-test) then
 		true()
 	else
 		let $tests := tokenize($param-test, "\s*,\s*")
 		let $ps := for $p in $params return tokenize($p, "=")[1]
-		let $_ := xdmp:log(concat("tests: ", xdmp:describe($tests)))
-		let $_ := xdmp:log(concat("ps: ", xdmp:describe($ps)))
 		return $tests = $ps
+	:)
 };
 
 declare function r:adjust-for-trailing-slash($pattern, $trailing-slash) as xs:string {
@@ -220,7 +229,7 @@ declare function r:compose-error($routes as element(r:routes), $url as xs:string
 		if($message) then concat("msg=", xdmp:url-encode($message)) else ""
 	), "&amp;")
 	return (
-		xdmp:log(concat($error,"?", $query-string)),
+		(:xdmp:log(concat($error,"?", $query-string)),:)
 		concat($error,"?", $query-string)
 	)
 };
@@ -231,7 +240,6 @@ declare function r:redirect-response($name as xs:string, $type as xs:integer?)  
 		xdmp:log(concat("Redirect to ", $name)),
 		xdmp:add-response-header("Location", $name),
 		xdmp:set-response-code($type, r:get-response-message($type))
-		(:,xdmp:redirect-response("http://localhost:7777/login"):)
 	)
 };
 

@@ -5,6 +5,21 @@ declare default function namespace "http://www.w3.org/2005/xpath-functions";
 (:declare namespace http="xdmp:http";:)
 
 (:
+declare variable $http:status := 
+	let $map as map:map := map:map();
+	let $codes := 
+	return
+:)
+
+declare function http:parse-params() (:as map:map?:) {
+	let $params as map:map := map:map()
+	let $_ := for $name in xdmp:get-request-field-names()
+	return 
+		map:put($params, $name, xdmp:get-request-field($name))
+	return $params  
+};
+
+(:
 declare function http:parse-request() as item()+ {
 	(<request xmlns="xdmp:http">
 		<url>{xdmp:get-request-url()}</url>
@@ -49,30 +64,32 @@ declare function http:parse-request() as item()+ {
  : @param $
  : @return
  :)
-declare function http:parse-accept-header($header as xs:string) as element(http:variants) {
-	<http:variants>{
-		for $t1 at $i in tokenize($header, '\s*,\s*')
-		return <http:variant order={$i}>{
-			for $t2 at $j in tokenize($t1, '\s*;\s*')
-			return 
-				if($j eq 1) then
-					<http:media-type>{
-						let $media-type := tokenize($t2,'/')
-						return (
-							<http:type>{$media-type[1]}</http:type>,
-							<http:sub-type>{$media-type[2]}</http:sub-type>
-						)
-					}</http:media-type>
-				else 
-					let $t3 := tokenize($t2, '\s*=\s*')
-					return
-						if($t3[1] eq 'q') then <http:quality>{functx:trim($t3[2])}</http:quality> 
-						else <http:param name={$t3[1]}>{functx:trim($t3[2])}</http:param>
-		}</http:variant>
-	}</http:variants>
+declare function http:parse-accept-header($header as xs:string?) as element(http:variants)? {
+	if($header) then
+		<http:variants>{
+			for $t1 at $i in tokenize($header, '\s*,\s*')
+			return <http:variant order={$i}>{
+				for $t2 at $j in tokenize($t1, '\s*;\s*')
+				return 
+					if($j eq 1) then
+						<http:media-type>{
+							let $media-type := tokenize($t2,'/')
+							return (
+								<http:type>{$media-type[1]}</http:type>,
+								<http:sub-type>{$media-type[2]}</http:sub-type>
+							)
+						}</http:media-type>
+					else 
+						let $t3 := tokenize($t2, '\s*=\s*')
+						return
+							if($t3[1] eq 'q') then <http:quality>{functx:trim($t3[2])}</http:quality> 
+							else <http:param name={$t3[1]}>{functx:trim($t3[2])}</http:param>
+			}</http:variant>
+		}</http:variants>
+	else ()
 };
 
-declare function http:preferred-variant($accept as element(http:variant)*, $variants as element(http:variant)+) as element(http:variant)* {
+declare function http:preferred-variant($accept as element(http:variant)*, $variants as element(http:variant)*) as element(http:variant)* {
 	(:let $_ := xdmp:log($accept/http:variant[http:media-type/http:type eq "application" and http:media-type/http:sub-type eq "xml"]):)
 	(:let $_ := xdmp:log($accept):)
 	let $matches := 
@@ -88,17 +105,18 @@ declare function http:preferred-variant($accept as element(http:variant)*, $vari
 			]
 		return
 			for $c in $candidates 
-			return <match score="{(data($c/http:quality), 1.0)[1]}" is-wildcard="{count($c/http:media-type/(http:type|http:sub-type)[. eq "*"])}">{
-				$v
-			}</match>
-	let $preferred := (
+			return 
+				<match score="{(data($c/http:quality), 1.0)[1]}" 
+					is-wildcard="{count($c/http:media-type/(http:type|http:sub-type)[. eq "*"])}">
+					{$v}
+				</match>
+	return (
 		for $m in $matches 
 		order by xs:float($m/@score) descending, 
 			xs:int($m/@is-wildcard) ascending,
 			xs:int($m/http:variant/@order) ascending
 		return $m
 	)[1]/http:variant
-	return $preferred
 };
 
 declare function http:variant-to-string($variant as element(http:variant)*) as xs:string? {
