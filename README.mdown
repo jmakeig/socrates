@@ -1,1 +1,3 @@
-TEST
+A simple question and answer application.
+
+Anyone (`socrates-anon`) can view questions and responses. Contibutors (`socrates-contributor`) can add questions and respond to existing questions. Curators (`socrates-curator`) inherit the contributor role and can also flag a response as an “answer” to a specific question .
