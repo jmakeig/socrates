@@ -30,7 +30,7 @@ let $model as map:map? := if($question) then mvc:model-create("question", $quest
 
 return (
 	if($question) then
-		mvc:render-view("question-ALT.html", $model)
+		mvc:render-view("question.html", $model)
 	else  
 		r:raise-error(404, mvc:model-create("missing-question", "Nope"))
 )
