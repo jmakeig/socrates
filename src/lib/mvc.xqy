@@ -39,6 +39,13 @@ declare function mvc:get-view($name as xs:string, $model as map:map?, $errors as
 		(xs:QName("mvc:model"), ($model, map:map())[1], xs:QName("mvc:errors"), ($errors, map:map())[1])
 	)
 };
+declare function mvc:get-view($name as xs:string, $model as map:map?) as item()* {
+	mvc:get-view($name, $model, ())
+};
+
+declare function mvc:get-view($name as xs:string) as item()* {
+	mvc:get-view($name, (), ())
+};
 
 declare function mvc:render-view($name as xs:string) as item()* {
 	mvc:render-view($name, (), ())

@@ -17,20 +17,16 @@
  :
  :)
 xquery version "1.0-ml";
-import module namespace r="http://marklogic.com/router" at "/lib/router.xqy";
-import module namespace mvc="http://marklogic.com/mvc" at "/lib/mvc.xqy";
-import module namespace s="http://marklogic.com/socrates" at "/lib/socrates.xqy";
+module namespace view="http://marklogic.com/socrates/view-helpers";
 
+declare default function namespace "http://www.w3.org/2005/xpath-functions";
 declare option xdmp:mapping "false";
 
-let $id as xs:string := xdmp:get-request-field("id")
-let $question as element(s:question)? := /s:question[@id eq $id]
-let $model as map:map? := if($question) then mvc:model-create("question", $question) else ()
 
-
-return (
-	if($question) then
-		mvc:render-view("question-ALT.html", $model)
-	else  
-		r:raise-error(404, mvc:model-create("missing-question", "Nope"))
-)
+declare function view:page-model-create($guts as item()*, $title as xs:string?, $head as item()*) as map:map {
+  let $model := map:map()
+  let $_ := map:put($model, "guts", $guts)
+  let $_ := map:put($model, "title", $title)
+  let $_ := map:put($model, "head", $head)
+  return $model
+};
